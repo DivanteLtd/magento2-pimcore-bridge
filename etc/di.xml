@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8" ?><!--
+/**
+ * @package Divante_PimcoreIntegration
+ * @author Mateusz Bukowski <mbukowski@divante.pl>
+ * @copyright 2018 Divante Sp. z o.o.
+ * @license See LICENSE_DIVANTE.txt for license details.
+ */
+-->
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:ObjectManager/etc/config.xsd">
+    <preference for="Divante\PimcoreIntegration\Api\Queue\Data\ProductQueueInterface" type="Divante\PimcoreIntegration\Model\Queue\Product\ProductQueue"/>
+    <preference for="Divante\PimcoreIntegration\Api\Queue\Data\CategoryQueueInterface" type="Divante\PimcoreIntegration\Model\Queue\Category\CategoryQueue"/>
+    <preference for="Divante\PimcoreIntegration\Api\Queue\Data\AssetQueueInterface" type="Divante\PimcoreIntegration\Model\Queue\Asset\AssetQueue"/>
+    <preference for="Divante\PimcoreIntegration\Api\Queue\ProductQueueRepositoryInterface" type="Divante\PimcoreIntegration\Model\Queue\Product\ProductQueueRepository"/>
+    <preference for="Divante\PimcoreIntegration\Api\Queue\ProductQueueImporterInterface" type="Divante\PimcoreIntegration\Queue\Importer\ProductQueueImporter"/>
+    <preference for="Divante\PimcoreIntegration\Api\Queue\CategoryQueueRepositoryInterface" type="Divante\PimcoreIntegration\Model\Queue\Category\CategoryQueueRepository"/>
+    <preference for="Divante\PimcoreIntegration\Api\Queue\CategoryQueueImporterInterface" type="Divante\PimcoreIntegration\Queue\Importer\CategoryQueueImporter"/>
+    <preference for="Divante\PimcoreIntegration\Api\CategoryRepositoryInterface" type="Divante\PimcoreIntegration\Model\CategoryRepository"/>
+    <preference for="Divante\PimcoreIntegration\Api\ProductRepositoryInterface" type="Divante\PimcoreIntegration\Model\ProductRepository"/>
+    <preference for="Divante\PimcoreIntegration\Api\RequestClientInterface" type="Divante\PimcoreIntegration\Http\Request\RequestClient"/>
+    <preference for="Divante\PimcoreIntegration\System\ConfigInterface" type="Divante\PimcoreIntegration\System\Config"/>
+    <preference for="Divante\PimcoreIntegration\Http\Notification\PimcoreNotificatorInterface" type="Divante\PimcoreIntegration\Http\Notification\PimcoreNotificator"/>
+    <preference for="Divante\PimcoreIntegration\Api\Queue\AssetQueueRepositoryInterface" type="Divante\PimcoreIntegration\Model\Queue\Asset\AssetQueueRepository"/>
+    <preference for="Divante\PimcoreIntegration\Api\Queue\AssetQueueImporterInterface" type="Divante\PimcoreIntegration\Queue\Importer\AssetQueueImporter"/>
+    <preference for="Divante\PimcoreIntegration\Api\Queue\Data\AssetQueueSearchResultsInterface" type="Magento\Framework\Api\Search\SearchResult" />
+    <preference for="Divante\PimcoreIntegration\Queue\Action\Asset\TypeMetadataExtractorInterface" type="Divante\PimcoreIntegration\Queue\Action\Asset\TypeMetadataExtractor" />
+    <preference for="Divante\PimcoreIntegration\Api\Pimcore\PimcoreAttributeMapperInterface" type="Divante\PimcoreIntegration\Model\Pimcore\SimpleAttributeMapper"/>
+    <preference for="Divante\PimcoreIntegration\Api\Data\AttributeSetInterface" type="Divante\PimcoreIntegration\Model\Eav\Entity\Attribute\Set"/>
+    <preference for="Divante\PimcoreIntegration\Api\AttributeSetRepositoryInterface" type="Divante\PimcoreIntegration\Model\Catalog\Product\Attribute\SetRepository"/>
+    <preference for="Divante\PimcoreIntegration\Http\Response\Transformator\Data\PropertyResolverInterface" type="Divante\PimcoreIntegration\Http\Response\Transformator\Data\PropertyResolver"/>
+    <preference for="Divante\PimcoreIntegration\Queue\Action\Product\GalleryImagesUpdaterInterface" type="Divante\PimcoreIntegration\Queue\Action\Product\GalleryImagesUpdater"/>
+    <type name="Divante\PimcoreIntegration\System\Config">
+        <arguments>
+            <argument name="scope" xsi:type="string">store</argument>
+        </arguments>
+    </type>
+    <type name="Divante\PimcoreIntegration\Queue\Action\Product\MediaGalleryDataModifier">
+        <arguments>
+            <argument name="queueImporter" xsi:type="object">Divante\PimcoreIntegration\Queue\Importer\AssetQueueImporter</argument>
+        </arguments>
+    </type>
+    <type name="Divante\PimcoreIntegration\Queue\Action\Asset\Strategy\ProductImage">
+        <arguments>
+            <argument name="queueImporter" xsi:type="object">Divante\PimcoreIntegration\Queue\Importer\ProductQueueImporter</argument>
+        </arguments>
+    </type>
+    <type name="Divante\PimcoreIntegration\Queue\Action\Asset\Strategy\CategoryImages">
+        <arguments>
+            <argument name="queueImporter" xsi:type="object">Divante\PimcoreIntegration\Queue\Importer\CategoryQueueImporter</argument>
+        </arguments>
+    </type>
+    <!-- Validators -->
+    <type name="Divante\PimcoreIntegration\Queue\Importer\ProductQueueImporter">
+        <arguments>
+            <argument name="validator" xsi:type="object">Divante\PimcoreIntegration\Model\Queue\Product\ProductQueueValidator</argument>
+            <argument name="queueBuilder" xsi:type="object">Divante\PimcoreIntegration\Queue\Builder\DbQueueBuilder</argument>
+        </arguments>
+    </type>
+    <type name="Divante\PimcoreIntegration\Queue\Importer\CategoryQueueImporter">
+        <arguments>
+            <argument name="validator" xsi:type="object">Divante\PimcoreIntegration\Model\Queue\Category\CategoryQueueValidator</argument>
+            <argument name="queueBuilder" xsi:type="object">Divante\PimcoreIntegration\Queue\Builder\DbQueueBuilder</argument>
+        </arguments>
+    </type>
+
+    <type name="Divante\PimcoreIntegration\Queue\Importer\AssetQueueImporter">
+        <arguments>
+            <argument name="validator" xsi:type="object">Divante\PimcoreIntegration\Model\Queue\Asset\AssetQueueValidator</argument>
+            <argument name="queueBuilder" xsi:type="object">Divante\PimcoreIntegration\Queue\Builder\DbQueueBuilder</argument>
+        </arguments>
+    </type>
+    <type name="Divante\PimcoreIntegration\Logger\Stream\Logger">
+        <arguments>
+            <argument name="name" xsi:type="string">StreamLogger</argument>
+            <argument name="handlers" xsi:type="array">
+                <item name="info" xsi:type="object">Divante\PimcoreIntegration\Logger\Stream\Handler\InfoHandler</item>
+                <item name="critical" xsi:type="object">Divante\PimcoreIntegration\Logger\Stream\Handler\CriticalHandler</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Divante\PimcoreIntegration\Http\Notification\PimcoreNotificator">
+        <arguments>
+            <argument name="urlBuilder" xsi:type="object">Divante\PimcoreIntegration\Http\EndpointUrlBuilder</argument>
+        </arguments>
+    </type>
+    <type name="Divante\PimcoreIntegration\Http\RequestClient">
+        <arguments>
+            <argument name="urlBuilder" xsi:type="object">Divante\PimcoreIntegration\Http\EndpointUrlBuilder</argument>
+        </arguments>
+    </type>
+    <type name="Divante\PimcoreIntegration\Queue\Action\UpdateCategoryAction">
+        <arguments>
+            <argument name="urlBuilder" xsi:type="object">Divante\PimcoreIntegration\Http\EndpointUrlBuilder</argument>
+            <argument name="transformator" xsi:type="object">Divante\PimcoreIntegration\Http\Response\Transformator\CategoryUpdateTransformator</argument>
+        </arguments>
+    </type>
+    <type name="Divante\PimcoreIntegration\Queue\Action\UpdateAssetAction">
+        <arguments>
+            <argument name="urlBuilder" xsi:type="object">Divante\PimcoreIntegration\Http\EndpointUrlBuilder</argument>
+            <argument name="transformator" xsi:type="object">Divante\PimcoreIntegration\Http\Response\Transformator\AssetUpdateTransformator</argument>
+        </arguments>
+    </type>
+    <type name="Magento\Framework\Console\CommandList">
+        <arguments>
+            <argument name="commands" xsi:type="array">
+                <item name="divante_bridge_asset_import" xsi:type="object">Divante\PimcoreIntegration\Console\Command\AssetsImportCommand</item>
+                <item name="divante_bridge_product_import" xsi:type="object">Divante\PimcoreIntegration\Console\Command\ProductImportCommand</item>
+                <item name="divante_bridge_category_import" xsi:type="object">Divante\PimcoreIntegration\Console\Command\CategoryImportCommand</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Divante\PimcoreIntegration\Queue\Action\UpdateProductAction">
+        <arguments>
+            <argument name="urlBuilder" xsi:type="object">Divante\PimcoreIntegration\Http\EndpointUrlBuilder</argument>
+            <argument name="transformator" xsi:type="object">Divante\PimcoreIntegration\Http\Response\Transformator\ProductUpdateTransformator</argument>
+            <argument name="dataModifiers" xsi:type="array">
+                <item name="price_modifier" xsi:type="object">Divante\PimcoreIntegration\Queue\Action\Product\PriceModifier</item>
+                <item name="news_to_modifier" xsi:type="object">Divante\PimcoreIntegration\Queue\Action\Product\NewsToModifier</item>
+                <item name="eav_attribute_option_modifier" xsi:type="object">Divante\PimcoreIntegration\Queue\Action\Product\EavAttributeOptionModifier</item>
+                <item name="category_ids_modifier" xsi:type="object">Divante\PimcoreIntegration\Queue\Action\Product\CategoryIdsModifier</item>
+                <item name="media_gallery_modifier" xsi:type="object">Divante\PimcoreIntegration\Queue\Action\Product\MediaGalleryDataModifier</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Divante\PimcoreIntegration\Model\Pimcore\PimcoreProduct">
+        <arguments>
+            <argument name="complexMappers" xsi:type="array">
+                <item name="visibility" xsi:type="object">Divante\PimcoreIntegration\Model\Pimcore\Mapper\VisibilityMapper</item>
+                <item name="is_active_in_pim" xsi:type="object">Divante\PimcoreIntegration\Model\Pimcore\Mapper\BooleanMapper</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Divante\PimcoreIntegration\Listeners\NewAttributeListener">
+        <arguments>
+            <argument name="attrCodeValidator" xsi:type="object">Divante\PimcoreIntegration\Listeners\Validator\AttributeCodeValidator</argument>
+        </arguments>
+    </type>
+    <type name="Divante\PimcoreIntegration\Listeners\NewAttributeListener">
+        <arguments>
+            <argument name="strategyFactory" xsi:type="object">Divante\PimcoreIntegration\Model\Catalog\Product\Attribute\Creator\Strategy\AttributeCreationStrategyFactory</argument>
+            <argument name="excludedAttributes" xsi:type="array">
+                <item name="visibility" xsi:type="string">visibility</item>
+                <item name="sku" xsi:type="string">sku</item>
+                <item name="sku_type" xsi:type="string">sku_type</item>
+                <item name="name" xsi:type="string">name</item>
+                <item name="price" xsi:type="string">price</item>
+                <item name="price_type" xsi:type="string">price_type</item>
+                <item name="price_type_view" xsi:type="string">price_type_view</item>
+                <item name="qty" xsi:type="string">qty</item>
+                <item name="weight" xsi:type="string">weight</item>
+                <item name="weight_type" xsi:type="string">weight_type</item>
+                <item name="product_has_weight" xsi:type="string">product_has_weight</item>
+                <item name="category_ids" xsi:type="string">category_ids</item>
+                <item name="image" xsi:type="string">image</item>
+                <item name="thumbnail" xsi:type="string">thumbnail</item>
+                <item name="small_image" xsi:type="string">small_image</item>
+                <item name="gallery" xsi:type="string">gallery</item>
+                <item name="quantity_and_stock_status" xsi:type="string">quantity_and_stock_status</item>
+                <item name="swatch_image" xsi:type="string">swatch_image</item>
+                <item name="pimcore_id" xsi:type="string">pimcore_id</item>
+                <item name="tax_class_id" xsi:type="string">tax_class_id</item>
+                <item name="tier_price" xsi:type="string">tier_price</item>
+                <item name="url_key" xsi:type="string">url_key</item>
+                <item name="shipment_type" xsi:type="string">shipment_type</item>
+                <item name="status" xsi:type="string">status</item>
+                <item name="is_active_in_pim" xsi:type="string">is_active_in_pim</item>
+            </argument>
+        </arguments>
+    </type>
+    <type name="Divante\PimcoreIntegration\Queue\Action\TypeStrategy\TypeStrategyFactory">
+        <arguments>
+            <argument name="strategies" xsi:type="array">
+                <item name="simple" xsi:type="string">Divante\PimcoreIntegration\Queue\Action\TypeStrategy\SimpleProductStrategy</item>
+                <item name="configurable" xsi:type="string">Divante\PimcoreIntegration\Queue\Action\TypeStrategy\ConfigurableProductStrategy</item>
+            </argument>
+        </arguments>
+    </type>
+</config>

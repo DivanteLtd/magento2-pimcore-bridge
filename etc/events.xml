@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:framework:Event/etc/events.xsd">
+    <event name="pimcore_product_update_after">
+        <observer name="categoriesLinker" instance="Divante\PimcoreIntegration\Listeners\CategoryLinkerListener"/>
+        <observer name="relatedProductsLinker" instance="Divante\PimcoreIntegration\Listeners\RelatedProductsLinkerListener"/>
+        <observer name="stockUpdater" instance="Divante\PimcoreIntegration\Listeners\StockUpdateListener"/>
+        <observer name="configurableProductsLinker" instance="Divante\PimcoreIntegration\Listeners\LinkConfigurableListener"/>
+    </event>
+    <event name="catalog_product_attribute_set_evaluate">
+        <observer name="newAttributeSetHandler" instance="Divante\PimcoreIntegration\Listeners\NewAttributeSetListener"/>
+    </event>
+    <event name="catalog_product_attributes_evaluate">
+        <observer name="newAttributesHandler" instance="Divante\PimcoreIntegration\Listeners\NewAttributeListener"/>
+    </event>
+</config>

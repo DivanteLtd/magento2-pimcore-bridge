@@ -1,0 +1,17 @@
+<?xml version="1.0"?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Cron:etc/crontab.xsd">
+    <group id="default">
+        <job name="remove_unused_attribute_sets" instance="Divante\PimcoreIntegration\Cron\UnusedAttributeSetRemover" method="execute">
+            <config_path>crontab/default/jobs/remove_unused_attribute_sets/schedule/cron_expr</config_path>
+        </job>
+        <job name="remove_unused_attribute_options" instance="Divante\PimcoreIntegration\Cron\UnusedAttributeOptionsRemover" method="execute">
+            <config_path>crontab/default/jobs/remove_unused_attribute_options/schedule/cron_expr</config_path>
+        </job>
+        <job name="enable_products" instance="Divante\PimcoreIntegration\Cron\ProductPublisher" method="execute">
+            <schedule>*/15 * * * *</schedule>
+        </job>
+        <job name="remove_old_queue_entries" instance="Divante\PimcoreIntegration\Cron\OldQueueEntriesRemover" method="execute">
+            <schedule>0 0 * * *</schedule>
+        </job>
+    </group>
+</config>

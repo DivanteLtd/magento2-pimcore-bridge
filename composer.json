@@ -1,0 +1,26 @@
+{
+    "name": "divante/module-pimcore5-integration",
+    "description": "Magento-Pimcore bridge module.",
+    "version": "1.0.4.13",
+    "require": {
+        "magento/product-community-edition": "^2.2"
+    },
+    "type": "magento2-module",
+    "license": [
+        "MIT"
+    ],
+    "authors": [
+        {
+            "name": "Bartosz Herba",
+            "email": "bherba@divante.pl"
+        }
+    ],
+    "autoload": {
+        "files": [
+            "registration.php"
+        ],
+        "psr-4": {
+            "Divante\\PimcoreIntegration\\": ""
+        }
+    }
+}

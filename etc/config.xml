@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<config xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Store:etc/config.xsd">
+    <default>
+        <configuration>
+            <basic>
+                <logger_type>0</logger_type>
+                <queue_outdated>60</queue_outdated>
+            </basic>
+        </configuration>
+        <pimcore>
+            <integration>
+                <category_queue_process>50</category_queue_process>
+                <product_queue_process>50</product_queue_process>
+                <asset_queue_process>50</asset_queue_process>
+            </integration>
+        </pimcore>
+        <cron>
+            <enable_products>
+                <is_active>1</is_active>
+            </enable_products>
+        </cron>
+    </default>
+</config>

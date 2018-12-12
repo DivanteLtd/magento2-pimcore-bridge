@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?><!--
+/**
+ * @package Divante_PimcoreIntegration
+ * @author Mateusz Bukowski <mbukowski@divante.pl>
+ * @copyright 2018 Divante Sp. z o.o.
+ * @license See LICENSE_DIVANTE.txt for license details.
+ */
+-->
+<routes xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:noNamespaceSchemaLocation="urn:magento:module:Magento_Webapi:etc/webapi.xsd">
+    <route method="PUT" url="/V1/bridge/catalog/product/add">
+        <service class="Divante\PimcoreIntegration\Api\Queue\ProductQueueImporterInterface" method="insertOrUpdate"/>
+        <resources>
+            <resource ref="Divante_PimcoreIntegration::bridge"/>
+        </resources>
+    </route>
+    <route method="DELETE" url="/V1/bridge/catalog/product/delete/:productId">
+        <service class="Divante\PimcoreIntegration\Api\Queue\ProductQueueImporterInterface" method="delete"/>
+        <resources>
+            <resource ref="Divante_PimcoreIntegration::bridge"/>
+        </resources>
+    </route>
+    <route method="PUT" url="/V1/bridge/catalog/category/add">
+        <service class="Divante\PimcoreIntegration\Api\Queue\CategoryQueueImporterInterface" method="insertOrUpdate"/>
+        <resources>
+            <resource ref="Divante_PimcoreIntegration::bridge"/>
+        </resources>
+    </route>
+    <route method="DELETE" url="/V1/bridge/catalog/category/delete/:categoryId">
+        <service class="Divante\PimcoreIntegration\Api\Queue\CategoryQueueImporterInterface" method="delete"/>
+        <resources>
+            <resource ref="Divante_PimcoreIntegration::bridge"/>
+        </resources>
+    </route>
+    <route method="PUT" url="/V1/bridge/asset/add">
+        <service class="Divante\PimcoreIntegration\Api\Queue\AssetQueueImporterInterface" method="insertOrUpdate"/>
+        <resources>
+            <resource ref="Divante_PimcoreIntegration::bridge"/>
+        </resources>
+    </route>
+    <route method="DELETE" url="/V1/bridge/asset/delete/:assetId">
+        <service class="Divante\PimcoreIntegration\Api\Queue\AssetQueueImporterInterface" method="delete"/>
+        <resources>
+            <resource ref="Divante_PimcoreIntegration::bridge"/>
+        </resources>
+    </route>
+</routes>
