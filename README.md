@@ -33,7 +33,7 @@ This module is a part of integration between Magento 2 and Pimcore.
 
 ## <a name="compatibility"></a>Compatibility
 
-This module is compatible with Magento 2.1.*
+This module is compatible with Magento 2.2.*
 
 ## <a name="installation"></a>Installing/Getting started
 ###
