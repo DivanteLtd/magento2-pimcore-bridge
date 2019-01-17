@@ -148,7 +148,7 @@ class ProductImage implements AssetHandlerStrategyInterface
         try {
             $this->state->setAreaCode(Area::AREA_ADMINHTML);
         } catch (\Exception $ex) {
-            // Fail gratefully
+            // Fail gracefully
         }
 
         if (null === $queue) {
