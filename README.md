@@ -37,7 +37,7 @@ This module is compatible with Magento 2.2.*
 
 ## <a name="installation"></a>Installing/Getting started
 ###
-1. require with composer `composer require divante/module-magento-p2m-integration` or copy files to `<root>/app/code/Divante/PimcoreIntegration`
+1. require with composer `composer require divante/module-pimcore5-integration` or copy files to `<root>/app/code/Divante/PimcoreIntegration`
 2. `php bin/magento setup:upgrade`
 3. `php bin/magento module:enable Divante_PimcoreIntegration`
 4. configure module in admin panel
