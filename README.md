@@ -29,7 +29,7 @@ This module is a part of integration between Magento 2 and Pimcore.
 	
 
 ## <a name="big-picture"></a>Big Picture
-![big_picture](README/integration_diagram.jpg)
+![big_picture](README/integration_diagram.png)
 
 ## <a name="compatibility"></a>Compatibility
 
