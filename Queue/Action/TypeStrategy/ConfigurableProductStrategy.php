@@ -11,6 +11,7 @@ namespace Divante\PimcoreIntegration\Queue\Action\TypeStrategy;
 use Divante\PimcoreIntegration\Exception\InvalidDataStructureException;
 use Divante\PimcoreIntegration\Http\Response\Transformator\Data\PropertyInterface;
 use Magento\Catalog\Api\Data\ProductInterface;
+use Magento\Catalog\Model\Product;
 use Magento\ConfigurableProduct\Helper\Product\Options\Factory as OptionsFactory;
 use Magento\ConfigurableProduct\Model\Product\Type\Configurable;
 use Magento\Eav\Model\Config;
@@ -81,6 +82,34 @@ class ConfigurableProductStrategy implements ProductTypeCreationStrategyInterfac
             );
         }
 
+        foreach ($attrCodes as $code) {
+            $attribute = $this->eavConfig->getAttribute(Product::ENTITY, $code);
+            $options = $attribute->getOptions();
+            array_shift($options);
+
+            $attributeValues = [];
+            foreach ($options as $option) {
+                $attributeValues[] = [
+                    'label'        => $option->getLabel(),
+                    'attribute_id' => $attribute->getId(),
+                    'value_index'  => $option->getValue(),
+                ];
+            }
+
+            $configurableAttributesData[] =
+                [
+                    'attribute_id' => $attribute->getId(),
+                    'code'         => $attribute->getAttributeCode(),
+                    'label'        => $attribute->getStoreLabel(),
+                    'position'     => '0',
+                    'values'       => $attributeValues,
+                ];
+        }
+
+        $configurableOptions = $this->optionsFactory->create($configurableAttributesData);
+        $extensionAttributes = $product->getExtensionAttributes();
+        $extensionAttributes->setConfigurableProductOptions($configurableOptions);
+        $product->setExtensionAttributes($extensionAttributes);
         $product->setTypeId(Configurable::TYPE_CODE);
 
         return $product;

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?><!--
 /**
  * @package Divante_PimcoreIntegration
- * @author Mateusz Bukowski <mbukowski@divante.pl>
+ * @author Bartosz Herba <bherba@divante.pl>
  * @copyright 2018 Divante Sp. z o.o.
  * @license See LICENSE_DIVANTE.txt for license details.
  */
@@ -28,6 +28,7 @@
     <preference for="Divante\PimcoreIntegration\Api\AttributeSetRepositoryInterface" type="Divante\PimcoreIntegration\Model\Catalog\Product\Attribute\SetRepository"/>
     <preference for="Divante\PimcoreIntegration\Http\Response\Transformator\Data\PropertyResolverInterface" type="Divante\PimcoreIntegration\Http\Response\Transformator\Data\PropertyResolver"/>
     <preference for="Divante\PimcoreIntegration\Queue\Action\Product\GalleryImagesUpdaterInterface" type="Divante\PimcoreIntegration\Queue\Action\Product\GalleryImagesUpdater"/>
+    <preference for="Magento\ConfigurableProduct\Plugin\Model\ResourceModel\Attribute\InStockOptionSelectBuilder" type="Divante\PimcoreIntegration\Plugin\Model\ResourceModel\Attribute\InStockOptionSelectBuilder" />
     <type name="Divante\PimcoreIntegration\System\Config">
         <arguments>
             <argument name="scope" xsi:type="string">store</argument>
