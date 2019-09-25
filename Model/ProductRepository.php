@@ -48,7 +48,11 @@ class ProductRepository extends \Magento\Catalog\Model\ProductRepository impleme
     {
         $connection = $this->resourceModel->getConnection();
         $table = $connection->getTableName('catalog_product_entity_int');
-        $sql = "SELECT entity_id FROM $table where value=?";
+        $tableEavAttribute = $connection->getTableName('eav_attribute');
+        $productEntityTypeId = \Magento\Catalog\Setup\CategorySetup::CATALOG_PRODUCT_ENTITY_TYPE_ID;
+        $sql = "SELECT entity_id FROM $table 
+                INNER JOIN  $tableEavAttribute  as t1 ON t1.attribute_id = $table.attribute_id
+                WHERE value=? AND t1.attribute_code='pimcore_id' AND t1.entity_type_id = $productEntityTypeId";
 
         return $connection->fetchOne($sql, $pimcoreId);
     }
