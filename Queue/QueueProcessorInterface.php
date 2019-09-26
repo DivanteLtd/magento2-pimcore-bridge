@@ -17,4 +17,9 @@ interface QueueProcessorInterface
      * @return void
      */
     public function process();
+
+    /**
+     * @return int
+     */
+    public function predictQueueLength();
 }

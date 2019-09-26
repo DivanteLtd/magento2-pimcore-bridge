@@ -109,6 +109,15 @@ abstract class AbstractQueueProcessor implements QueueProcessorInterface
     }
 
     /**
+     * @return int
+     */
+    public function predictQueueLength()
+    {
+        $searchResults = $this->getQueueItems();
+        return $searchResults->getTotalCount();
+    }
+
+    /**
      * @return void
      */
     public function process()
