@@ -83,6 +83,10 @@
                     <comment>
                         <![CDATA[Limit of how many asset queues entities should be processed in one batch action.]]></comment>
                 </field>
+                <field id="product_queue_process_status" translate="label" type="label" sortOrder="60" showInDefault="1" showInWebsite="0" showInStore="0">
+                    <label>Queue Process Status</label>
+                    <frontend_model>Divante\PimcoreIntegration\Block\Adminhtml\System\Config\Form\Queue\Status</frontend_model>
+                </field>
             </group>
         </section>
         <section id="cron" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
