@@ -10,6 +10,7 @@ namespace Divante\PimcoreIntegration\Queue\Action\Asset\Strategy;
 
 use Divante\PimcoreIntegration\Api\Queue\Data\AssetQueueInterface;
 use Divante\PimcoreIntegration\Http\Response\Transformator\Data\AssetInterface;
+use Divante\PimcoreIntegration\Logger\BridgeLoggerFactory;
 use Divante\PimcoreIntegration\Queue\Action\ActionResultFactory;
 use Divante\PimcoreIntegration\Queue\Action\ActionResultInterface;
 use Divante\PimcoreIntegration\Queue\Action\Asset\File;
@@ -23,6 +24,12 @@ use Magento\Framework\DataObject;
  */
 class ReplaceImages implements AssetHandlerStrategyInterface
 {
+
+    /**
+     * @var \Monolog\Logger
+     */
+    private $logger;
+
     /**
      * @var PathResolver
      */
@@ -50,17 +57,20 @@ class ReplaceImages implements AssetHandlerStrategyInterface
      * @param ResourceConnection $resource
      * @param File $file
      * @param ActionResultFactory $actionResultFactory
+     * @param BridgeLoggerFactory $loggerFactory
      */
     public function __construct(
         PathResolver $pathResolver,
         ResourceConnection $resource,
         File $file,
-        ActionResultFactory $actionResultFactory
+        ActionResultFactory $actionResultFactory,
+        BridgeLoggerFactory $loggerFactory
     ) {
         $this->pathResolver = $pathResolver;
         $this->resource = $resource;
         $this->file = $file;
         $this->actionResultFactory = $actionResultFactory;
+        $this->logger = $loggerFactory->getLoggerInstance();
     }
 
     /**
@@ -75,11 +85,18 @@ class ReplaceImages implements AssetHandlerStrategyInterface
         TypeMetadataExtractorInterface $metadataExtractor,
         AssetQueueInterface $queue = null
     ): ActionResultInterface {
-        $this->replaceProductsImage($dto);
-        $this->replaceCategoryImage($dto);
-        $this->updateEntries($dto);
 
-        return $this->actionResultFactory->create(['result' => ActionResultInterface::SUCCESS]);
+        $this->logger->addInfo('ProductImage', [$dto->getNameWithExt(), $dto->getChecksum()->getValue()]);
+        $actionResult = ActionResultInterface::SUCCESS;
+        try{
+            $this->replaceProductsImage($dto);
+            $this->replaceCategoryImage($dto);
+            $this->updateEntries($dto);
+        }catch (\Exception $ex){
+            $this->logger->addCritical($ex->getMessage(), [$ex->getCode(), $ex->getFile(), $ex->getLine(), $ex->getTraceAsString() ]);
+            $actionResult = ActionResultInterface::ERROR;
+        }
+        return $this->actionResultFactory->create(['result' => $actionResult]);
     }
 
     /**

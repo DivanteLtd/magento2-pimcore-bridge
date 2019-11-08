@@ -12,6 +12,7 @@ use Divante\PimcoreIntegration\Api\ProductRepositoryInterface;
 use Divante\PimcoreIntegration\Api\Queue\Data\AssetQueueInterface;
 use Divante\PimcoreIntegration\Api\Queue\ProductQueueImporterInterface;
 use Divante\PimcoreIntegration\Http\Response\Transformator\Data\AssetInterface;
+use Divante\PimcoreIntegration\Logger\BridgeLoggerFactory;
 use Divante\PimcoreIntegration\Model\Queue\Asset\AssetQueue;
 use Divante\PimcoreIntegration\Model\Queue\Product\ProductQueue;
 use Divante\PimcoreIntegration\Model\Queue\Product\ProductQueueFactory;
@@ -38,6 +39,12 @@ use Magento\Store\Model\StoreManagerInterface;
  */
 class ProductImage implements AssetHandlerStrategyInterface
 {
+
+    /**
+     * @var \Monolog\Logger
+     */
+    private $logger;
+
     /**
      * @var ProductRepositoryInterface
      */
@@ -106,6 +113,7 @@ class ProductImage implements AssetHandlerStrategyInterface
      * @param ActionResultFactory $actionResultFactory
      * @param AbstractImporter $queueImporter
      * @param ProductQueueFactory $productQueueFactory
+     * @param BridgeLoggerFactory $loggerFactory
      */
     public function __construct(
         ProductRepositoryInterface $productRepository,
@@ -117,7 +125,8 @@ class ProductImage implements AssetHandlerStrategyInterface
         StoreManagerInterface $storeManager,
         ActionResultFactory $actionResultFactory,
         AbstractImporter $queueImporter,
-        ProductQueueFactory $productQueueFactory
+        ProductQueueFactory $productQueueFactory,
+        BridgeLoggerFactory $loggerFactory
     ) {
         $this->productRepository = $productRepository;
         $this->mediaGalleryManagement = $mediaGalleryManagement;
@@ -129,6 +138,7 @@ class ProductImage implements AssetHandlerStrategyInterface
         $this->actionResultFactory = $actionResultFactory;
         $this->queueImporter = $queueImporter;
         $this->productQueueFactory = $productQueueFactory;
+        $this->logger = $loggerFactory->getLoggerInstance();
     }
 
     /**
@@ -145,6 +155,9 @@ class ProductImage implements AssetHandlerStrategyInterface
         TypeMetadataExtractorInterface $metadataExtractor,
         AssetQueueInterface $queue = null
     ): ActionResultInterface {
+
+        $this->logger->addInfo('ProductImage', [$dto->getNameWithExt(), $dto->getChecksum()->getValue()]);
+
         try {
             $this->state->setAreaCode(Area::AREA_ADMINHTML);
         } catch (\Exception $ex) {
@@ -200,17 +213,30 @@ class ProductImage implements AssetHandlerStrategyInterface
             ->setDisabled(false)
             ->setTypes($metadataExtractor->getAssetTypes());
 
-        $oldImgId = $this->resolveOldImageId($product);
-        if (null === $oldImgId) {
-            $this->mediaGalleryManagement->create($product->getSku(), $entry);
-        } else {
-            $entry->setId($oldImgId);
-            $this->mediaGalleryManagement->update($product->getSku(), $entry);
+        $actionResult = ActionResultInterface::SUCCESS;
+        // write image to filesystem before mediaGalleryManagement is active to ensure file exists
+        try{
+            file_put_contents($path, $this->dto->getDecodedImage());
+        }catch (\Exception $ex){
+            $this->logger->addCritical($ex->getMessage(), [$ex->getCode(), $ex->getFile(), $ex->getLine(), $ex->getTraceAsString() ]);
+            $actionResult = ActionResultInterface::ERROR;
         }
 
-        file_put_contents($path, $this->dto->getDecodedImage());
+        $oldImgId = $this->resolveOldImageId($product);
+        try{
+            if (null === $oldImgId) {
+                $this->mediaGalleryManagement->create($product->getSku(), $entry);
+            } else {
+                $entry->setId($oldImgId);
+                $this->mediaGalleryManagement->update($product->getSku(), $entry);
+            }
+        }catch (\Exception $ex){
+            $this->logger->addCritical($ex->getMessage(), [$ex->getCode(), $ex->getFile(), $ex->getLine(), $ex->getTraceAsString() ]);
+            $actionResult = ActionResultInterface::ERROR;
 
-        return $this->actionResultFactory->create(['result' => ActionResultInterface::SUCCESS]);
+        }
+
+        return $this->actionResultFactory->create(['result' => $actionResult]);
     }
 
     /**

@@ -13,11 +13,11 @@ use Magento\Framework\Event\Observer;
 /**
  * Class RelatedProductsLinkerListener
  */
-class RelatedProductsLinkerListener extends AbstractLinkerListener
+class UpSellLinkerListener extends AbstractLinkerListener
 {
 
-    const PIMCORE_FIELDNAME_RELATED = 'related_products';
-    const MAGENTO_PRODUCT_LINKTYPE_RELATED = 'related';
+    const PIMCORE_FIELDNAME_UPSELL = 'up_sell_products';
+    const MAGENTO_PRODUCT_LINKTYPE_UPSELL = 'upsell';
 
 
     /**
@@ -28,12 +28,10 @@ class RelatedProductsLinkerListener extends AbstractLinkerListener
     public function execute(Observer $observer)
     {
         $pimcoreProduct = $observer->getData('pimcore');
-        /** @var \Magento\Catalog\Model\Product $product */
         $product = $observer->getData('product');
 
-        $this->setNewProductLinks($pimcoreProduct, $product,
-            self::MAGENTO_PRODUCT_LINKTYPE_RELATED,
-            self::PIMCORE_FIELDNAME_RELATED);
+        $this->setNewProductLinks($pimcoreProduct,$product,
+            self::MAGENTO_PRODUCT_LINKTYPE_UPSELL,
+            self::PIMCORE_FIELDNAME_UPSELL);
     }
-
 }

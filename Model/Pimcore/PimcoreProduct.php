@@ -69,6 +69,11 @@ class PimcoreProduct extends DataObject implements PimcoreProductInterface
     public function setElements(array $elements): PimcoreProductInterface
     {
         foreach ($elements as $attributeCode => $attributeData) {
+
+            if(strlen($attributeCode) > 60){
+                $attributeCode = 'CS'.md5($attributeCode);
+            }
+
             if (array_key_exists($attributeCode, $this->complexMappers)) {
                 if (!$this->complexMappers[$attributeCode] instanceof ComplexMapperInterface) {
                     throw new InvalidTypeException(

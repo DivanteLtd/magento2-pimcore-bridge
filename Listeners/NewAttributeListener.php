@@ -171,10 +171,15 @@ class NewAttributeListener implements ObserverInterface
             $elements = $data['elements'];
             $configurables = $this->extractConfigurableCodes($data);
 
-            $this->validateAttributes($elements);
+           // $this->validateAttributes($elements);
 
             foreach ($elements as $code => $attrData) {
-                if (\in_array($code, $this->excludedAttributes)) {
+
+                if(strlen($code) > 60){
+                    $code = 'CS'. md5($code);
+                }
+
+                if ($code && \in_array($code, $this->excludedAttributes)) {
                     continue;
                 }
 

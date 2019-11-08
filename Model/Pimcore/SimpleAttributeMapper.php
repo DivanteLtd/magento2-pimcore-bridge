@@ -41,6 +41,9 @@ class SimpleAttributeMapper implements PimcoreAttributeMapperInterface
                 return $this->mapObject($attributeData);
             case self::MULTIOBJECT:
                 return $this->mapMultiobject($attributeData);
+            case 'quantityValue':
+            case 'numeric':
+                return $this->mapNumeric($attributeData);
             default:
                 return null;
         }
@@ -55,6 +58,12 @@ class SimpleAttributeMapper implements PimcoreAttributeMapperInterface
     {
         return $attributeData['value'];
     }
+
+    private function mapNumeric(array $attributeData)
+    {
+        return  $attributeData['value'];
+    }
+
 
     /**
      * We need to map a key instead of value because this is how magento store option value

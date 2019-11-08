@@ -152,7 +152,8 @@ class UpdateAssetAction implements ActionInterface
         $this->request->setUri($this->urlBuilder->build('asset/id/' . $queue->getAssetId()))
             ->setEventPrefix('asset')
             ->setMethod('GET')
-            ->setStoreViewId($queue->getStoreViewId());
+            ->setStoreViewId($queue->getStoreViewId())
+            ->setQueryData(['thumbnail' => 'magento']);
 
         return $this->request;
     }

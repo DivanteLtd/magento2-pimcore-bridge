@@ -211,7 +211,7 @@ class UpdateCategoryAction implements ActionInterface
         $this->repository->save($category);
         $this->eventManager->dispatch('pimcore_category_update_after', ['category' => $category]);
 
-        $category->move($category->getParentId(), null);
+        //$category->move($category->getParentId(), null);
 
         if ($imageId) {
             $this->queueImportImageAsset($queue, $imageId);

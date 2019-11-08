@@ -75,6 +75,18 @@ class LabelManager
             return;
         }
 
+        $frontEndLabels = $attr->getFrontendLabels();
+        // if no store-view-specific labels are set, check and update the default-label
+        if( is_array($frontEndLabels ) && count( $frontEndLabels)  == 0) {
+            $newDefaultLabel = reset($labels);
+            if($attr->getDefaultFrontendLabel() !== $newDefaultLabel){
+                $attr->setDefaultFrontendLabel($newDefaultLabel);
+
+                $attrRepository->save($attr);
+                return;
+            }
+        }
+
         $currentLabels = $this->getStoreLabels($attr->getId());
         $labelsToSave = $currentLabels;
 
@@ -86,8 +98,19 @@ class LabelManager
             return;
         }
 
-        $attr->setStoreLabels($labelsToSave);
-        $attrRepository->save($attr);
+
+        /** @var  $attr2 */
+        $attr2 = $attrRepository->get(Product::ENTITY, $attrCode);
+        $labelsX = $attr2->getFrontEndLabels();
+        foreach ($labelsX as $label) {
+            foreach ($labels as $key => $newLabelText) {
+                if($key === $label->getStoreId()){
+                    $label->setLabel($newLabelText );
+                }
+            }
+        }
+        $attr2->setFrontendLabels($labelsX);
+        $attrRepository->save($attr2);
     }
 
     /**

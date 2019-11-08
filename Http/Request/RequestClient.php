@@ -91,6 +91,8 @@ class RequestClient implements RequestClientInterface
         BridgeLoggerFactory $bridgeLoggerFactory
     ) {
         $this->curlAdapter = $curlAdapter;
+        $this->curlAdapter->setCurlOption(CURLOPT_SSL_VERIFYHOST, false);
+        $this->curlAdapter->setCurlOption(CURLOPT_SSL_VERIFYPEER, false);
         $this->eventManager = $eventManager;
         $this->config = $config;
         $this->logger = $bridgeLoggerFactory->getLoggerInstance();

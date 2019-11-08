@@ -25,8 +25,8 @@ class SelectStrategy extends AbstractOptionTypeStrategy
     public function execute(): int
     {
         if (empty($this->attrData['value'])
-            || (empty($this->attrData['value']['value']) && $this->attrData['value']['value'] !== '0')
-            || empty($this->attrData['value']['key'])
+            || (empty($this->attrData['value']['value']) && $this->attrData['value']['value'] !== '0' && $this->attrData['value']['key'] !== false)
+            || (empty($this->attrData['value']['key']) && $this->attrData['value']['key'] !== false)
         ) {
             return 0;
         }

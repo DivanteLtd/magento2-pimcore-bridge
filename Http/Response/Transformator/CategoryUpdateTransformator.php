@@ -79,6 +79,10 @@ class CategoryUpdateTransformator implements ResponseTransformatorInterface
                 $flatData->setData('url_key', $elements['url_key']['value']);
             }
 
+            if($elements['position']["value"]) {
+                $flatData->setData('position', $elements['position']['value']);
+            }
+
             if ($this->hasParent($isRoot, $data)) {
                 try {
                     $flatData->setData('pimcore_parent_id', $data['parentId']);

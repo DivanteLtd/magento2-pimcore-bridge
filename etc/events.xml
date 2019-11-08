@@ -3,6 +3,8 @@
     <event name="pimcore_product_update_after">
         <observer name="categoriesLinker" instance="Divante\PimcoreIntegration\Listeners\CategoryLinkerListener"/>
         <observer name="relatedProductsLinker" instance="Divante\PimcoreIntegration\Listeners\RelatedProductsLinkerListener"/>
+        <observer name="crossSellLinker" instance="Divante\PimcoreIntegration\Listeners\CrossSellLinkerListener"/>
+        <observer name="upSellLinker" instance="Divante\PimcoreIntegration\Listeners\UpSellLinkerListener"/>
         <observer name="stockUpdater" instance="Divante\PimcoreIntegration\Listeners\StockUpdateListener"/>
         <observer name="configurableProductsLinker" instance="Divante\PimcoreIntegration\Listeners\LinkConfigurableListener"/>
     </event>

@@ -1,7 +1,7 @@
 <?php
 /**
  * @package  Divante\PimcoreIntegration
- * @author Bartosz Herba <bherba@divante.pl>
+ * @author azu tripuls.de
  * @copyright 2018 Divante Sp. z o.o.
  * @license See LICENSE_DIVANTE.txt for license details.
  */
@@ -13,11 +13,11 @@ use Magento\Framework\Event\Observer;
 /**
  * Class RelatedProductsLinkerListener
  */
-class RelatedProductsLinkerListener extends AbstractLinkerListener
+class CrossSellLinkerListener extends  AbstractLinkerListener
 {
+    const PIMCORE_FIELDNAME_CROSSSELL = 'cross_sell_products';
+    const MAGENTO_PRODUCT_LINKTYPE_CROSSSELL = 'crosssell';
 
-    const PIMCORE_FIELDNAME_RELATED = 'related_products';
-    const MAGENTO_PRODUCT_LINKTYPE_RELATED = 'related';
 
 
     /**
@@ -28,12 +28,12 @@ class RelatedProductsLinkerListener extends AbstractLinkerListener
     public function execute(Observer $observer)
     {
         $pimcoreProduct = $observer->getData('pimcore');
-        /** @var \Magento\Catalog\Model\Product $product */
         $product = $observer->getData('product');
 
-        $this->setNewProductLinks($pimcoreProduct, $product,
-            self::MAGENTO_PRODUCT_LINKTYPE_RELATED,
-            self::PIMCORE_FIELDNAME_RELATED);
+            $this->setNewProductLinks($pimcoreProduct,$product,
+            self::MAGENTO_PRODUCT_LINKTYPE_CROSSSELL,
+            self::PIMCORE_FIELDNAME_CROSSSELL);
     }
+
 
 }

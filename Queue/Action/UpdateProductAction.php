@@ -188,6 +188,8 @@ class UpdateProductAction implements ActionInterface
         // We manage linking category, related_products in after event
         $product->unsetData('category_ids');
         $product->unsetData('related_products');
+        $product->unsetData('cross_sell_products');
+        $product->unsetData('up_sell_products');
         $product->setHasDataChanges(true);
 
         $strategy = $this->typeStrategyFactory->create($product->getTypeId());
@@ -195,7 +197,7 @@ class UpdateProductAction implements ActionInterface
 
         $this->eventManager->dispatch(
             'pimcore_product_update_before',
-            ['product' => $product, 'pimcore' => $pimcoreProduct]
+            ['product' => $product, 'pimcore' => $pimcoreProduct, 'queue' => $queue]
         );
 
         if ($product->getIsSkip()) {
@@ -207,7 +209,7 @@ class UpdateProductAction implements ActionInterface
 
         $this->eventManager->dispatch(
             'pimcore_product_update_after',
-            ['product' => $saved, 'pimcore' => $pimcoreProduct]
+            ['product' => $saved, 'pimcore' => $pimcoreProduct, 'queue' => $queue]
         );
 
         return $this->actionResultFactory->create(['result' => ActionResultInterface::SUCCESS]);
