@@ -184,12 +184,22 @@ class UpdateProductAction implements ActionInterface
             $dataModifier->handle($product, $pimcoreProduct);
         }
 
-        $product->addData($pimcoreProduct->getData());
+        // auto-assign product to website only if  current queue-item is not syncing into admin-store
+        if($queue->getStoreViewId() !== "0"){
+            $currentQueueWebsite = $this->storeManager->getStore($queue->getStoreViewId())->getWebsiteId();
+            $activeWebsites = array_unique (array_merge($product->getWebsiteIds(),[$currentQueueWebsite]));
+            $product->setWebsiteIds($activeWebsites);
+        }
+
         // We manage linking category, related_products in after event
-        $product->unsetData('category_ids');
+        $productDataFromPimcore = $pimcoreProduct->getData();
+        unset($productDataFromPimcore['category_ids'] ); // do not touch $product categories yet, e.g. $product->unsetData('category_ids');
+
+        $product->addData($productDataFromPimcore);
         $product->unsetData('related_products');
         $product->unsetData('cross_sell_products');
         $product->unsetData('up_sell_products');
+
         $product->setHasDataChanges(true);
 
         $strategy = $this->typeStrategyFactory->create($product->getTypeId());

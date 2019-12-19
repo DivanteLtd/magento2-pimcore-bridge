@@ -21,7 +21,9 @@ use Divante\PimcoreIntegration\System\ConfigInterface;
 use Magento\Framework\Api\Search\SearchResultInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrderBuilder;
+use Magento\Framework\App\Area;
 use Magento\Framework\Event\ManagerInterface;
+use Magento\Store\Model\App\Emulation;
 
 /**
  * Class AbstractProcessor
@@ -72,6 +74,11 @@ abstract class AbstractQueueProcessor implements QueueProcessorInterface
      * @var ActionResultFactory
      */
     protected $actionResultFactory;
+    /**
+     * @var \Magento\Store\Model\App\Emulation
+     */
+    protected $emulation;
+
 
     /**
      * AbstractProcessor constructor.
@@ -84,6 +91,7 @@ abstract class AbstractQueueProcessor implements QueueProcessorInterface
      * @param PimcoreNotificatorInterface $notificator
      * @param SortOrderBuilder $sortOrderBuilder
      * @param ActionResultFactory $actionResultFactory
+     * @param Emulation $emulation
      * @param bool $isSendNotification
      */
     public function __construct(
@@ -95,8 +103,10 @@ abstract class AbstractQueueProcessor implements QueueProcessorInterface
         PimcoreNotificatorInterface $notificator,
         SortOrderBuilder $sortOrderBuilder,
         ActionResultFactory $actionResultFactory,
+        Emulation $emulation,
         bool $isSendNotification = true
     ) {
+        $this->emulation = $emulation;
         $this->actionFactory = $actionFactory;
         $this->config = $config;
         $this->searchCriteriaBuilder = $searchCriteriaBuilder;
@@ -131,6 +141,8 @@ abstract class AbstractQueueProcessor implements QueueProcessorInterface
         /** @var QueueInterface $queue */
         foreach ($searchResults->getItems() as $queue) {
             try {
+
+                $this->emulation->startEnvironmentEmulation($queue->getStoreViewId(), Area::AREA_FRONTEND, 1);
                 $action = $this->actionFactory->createByType($this->getActionType($queue));
                 $result = $action->execute($queue);
 
@@ -138,6 +150,7 @@ abstract class AbstractQueueProcessor implements QueueProcessorInterface
                 $this->notificator->setStatus($this->resolveNotificationStatus($queue));
 
                 $queue->setStatus(QueueStatusInterface::COMPLETED);
+                $this->emulation->stopEnvironmentEmulation();
             } catch (\Exception $ex) {
                 $this->logger->critical($ex->getMessage());
 

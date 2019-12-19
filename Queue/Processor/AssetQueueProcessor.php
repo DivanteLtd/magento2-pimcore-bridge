@@ -19,6 +19,7 @@ use Divante\PimcoreIntegration\System\ConfigInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Event\ManagerInterface;
+use Magento\Store\Model\App\Emulation;
 
 /**
  * Class AssetQueueProcessor
@@ -41,6 +42,8 @@ class AssetQueueProcessor extends AbstractQueueProcessor
      * @param PimcoreNotificatorInterface $notificator
      * @param AssetQueueRepositoryInterface $assetQueueRepository
      * @param SortOrderBuilder $sortOrderBuilder
+     * @param ActionResultFactory $actionResultFactory
+     * @param Emulation $emulation
      * @param bool $isSendNotification
      */
     public function __construct(
@@ -53,6 +56,7 @@ class AssetQueueProcessor extends AbstractQueueProcessor
         AssetQueueRepositoryInterface $assetQueueRepository,
         SortOrderBuilder $sortOrderBuilder,
         ActionResultFactory $actionResultFactory,
+        Emulation $emulation,
         bool $isSendNotification = true
     ) {
         parent::__construct(
@@ -64,6 +68,7 @@ class AssetQueueProcessor extends AbstractQueueProcessor
             $notificator,
             $sortOrderBuilder,
             $actionResultFactory,
+            $emulation,
             $isSendNotification
         );
 

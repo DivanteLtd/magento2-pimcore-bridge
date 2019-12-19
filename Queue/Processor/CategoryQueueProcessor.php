@@ -19,6 +19,7 @@ use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Event\ManagerInterface;
 use Divante\PimcoreIntegration\Queue\Action\ActionResultFactory;
+use Magento\Store\Model\App\Emulation;
 
 /**
  * Class CategoryQueueProcessor
@@ -40,6 +41,9 @@ class CategoryQueueProcessor extends AbstractQueueProcessor
      * @param ManagerInterface $eventManager
      * @param PimcoreNotificatorInterface $notificator
      * @param CategoryQueueRepositoryInterface $categoryQueueRepository
+     * @param SortOrderBuilder $sortOrderBuilder
+     * @param ActionResultFactory $actionResultFactory
+     * @param Emulation $emulation
      * @param bool $isSendNotification
      */
     public function __construct(
@@ -52,6 +56,7 @@ class CategoryQueueProcessor extends AbstractQueueProcessor
         CategoryQueueRepositoryInterface $categoryQueueRepository,
         SortOrderBuilder $sortOrderBuilder,
         ActionResultFactory $actionResultFactory,
+        Emulation $emulation,
         bool $isSendNotification = true
     ) {
         parent::__construct(
@@ -63,6 +68,7 @@ class CategoryQueueProcessor extends AbstractQueueProcessor
             $notificator,
             $sortOrderBuilder,
             $actionResultFactory,
+            $emulation,
             $isSendNotification
         );
         $this->categoryQueueRepository = $categoryQueueRepository;

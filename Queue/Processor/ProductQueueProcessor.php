@@ -8,6 +8,7 @@
 
 namespace Divante\PimcoreIntegration\Queue\Processor;
 
+use Divante\PimcoreIntegration\Api\Queue\AssetQueueRepositoryInterface;
 use Divante\PimcoreIntegration\Api\Queue\Data\QueueInterface;
 use Divante\PimcoreIntegration\Api\Queue\ProductQueueRepositoryInterface;
 use Divante\PimcoreIntegration\Http\Notification\PimcoreNotificatorInterface;
@@ -18,6 +19,7 @@ use Divante\PimcoreIntegration\System\ConfigInterface;
 use Magento\Framework\Api\SearchCriteriaBuilder;
 use Magento\Framework\Api\SortOrderBuilder;
 use Magento\Framework\Event\ManagerInterface;
+use Magento\Store\Model\App\Emulation;
 
 /**
  * Class ProductQueueProcessor
@@ -39,6 +41,9 @@ class ProductQueueProcessor extends AbstractQueueProcessor
      * @param ManagerInterface $eventManager
      * @param PimcoreNotificatorInterface $notificator
      * @param ProductQueueRepositoryInterface $productQueueRepository
+     * @param SortOrderBuilder $sortOrderBuilder
+     * @param ActionResultFactory $actionResultFactory
+     * @param Emulation $emulation
      * @param bool $isSendNotification
      */
     public function __construct(
@@ -51,6 +56,7 @@ class ProductQueueProcessor extends AbstractQueueProcessor
         ProductQueueRepositoryInterface $productQueueRepository,
         SortOrderBuilder $sortOrderBuilder,
         ActionResultFactory $actionResultFactory,
+        Emulation $emulation,
         bool $isSendNotification = true
     ) {
         parent::__construct(
@@ -62,6 +68,7 @@ class ProductQueueProcessor extends AbstractQueueProcessor
             $notificator,
             $sortOrderBuilder,
             $actionResultFactory,
+            $emulation,
             $isSendNotification
         );
 
