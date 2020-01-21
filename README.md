@@ -39,7 +39,7 @@ The second part of this module (Magento 2 - Pimcore Integration Module) is avail
 
 ## <a name="compatibility"></a>Compatibility
 
-This module is compatible with Magento 2.2.x
+This module is compatible with Magento 2.2.x and 2.3.x
 
 ## <a name="installation"></a>Installing/Getting started
 ###
