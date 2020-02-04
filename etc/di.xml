@@ -29,6 +29,22 @@
     <preference for="Divante\PimcoreIntegration\Http\Response\Transformator\Data\PropertyResolverInterface" type="Divante\PimcoreIntegration\Http\Response\Transformator\Data\PropertyResolver"/>
     <preference for="Divante\PimcoreIntegration\Queue\Action\Product\GalleryImagesUpdaterInterface" type="Divante\PimcoreIntegration\Queue\Action\Product\GalleryImagesUpdater"/>
     <preference for="Magento\ConfigurableProduct\Plugin\Model\ResourceModel\Attribute\InStockOptionSelectBuilder" type="Divante\PimcoreIntegration\Plugin\Model\ResourceModel\Attribute\InStockOptionSelectBuilder" />
+    
+    <type name="Divante\PimcoreIntegration\Console\Command\AssetsImportCommand">
+        <arguments>
+            <argument name="queueProcessor" xsi:type="object">Divante\PimcoreIntegration\Queue\Processor\AssetQueueProcessor\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Divante\PimcoreIntegration\Console\Command\ProductImportCommand">
+        <arguments>
+            <argument name="productQueueProcessor" xsi:type="object">Divante\PimcoreIntegration\Queue\Processor\ProductQueueProcessor\Proxy</argument>
+        </arguments>
+    </type>
+    <type name="Divante\PimcoreIntegration\Console\Command\CategoryImportCommand">
+        <arguments>
+            <argument name="categoryQueueProcessor" xsi:type="object">Divante\PimcoreIntegration\Queue\Processor\CategoryQueueProcessor\Proxy</argument>
+        </arguments>
+    </type>
     <type name="Divante\PimcoreIntegration\System\Config">
         <arguments>
             <argument name="scope" xsi:type="string">store</argument>
