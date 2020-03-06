@@ -42,7 +42,8 @@ class NameResolver implements NameResolverInterface
             ->from(
                 'information_schema.TABLES',
                 'AUTO_INCREMENT'
-            )->where('TABLE_NAME = ?', $connection->getTableName('eav_attribute_set'));
+            )->where('TABLE_NAME = ?', $connection->getTableName('eav_attribute_set')
+            )->where('TABLE_SCHEMA = ?', $this->resource->getSchemaName(ResourceConnection::DEFAULT_CONNECTION));
 
         return sprintf('pimcore-set-%s', (int)$connection->fetchOne($query));
     }
