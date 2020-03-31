@@ -8,7 +8,7 @@
 
 namespace Divante\PimcoreIntegration\Console\Command;
 
-use Divante\PimcoreIntegration\Queue\Processor\CategoryQueueProcessor;
+use Divante\PimcoreIntegration\Queue\Processor\CategoryQueueProcessorFactory;
 use Magento\Framework\App\Area;
 use Magento\Framework\App\State;
 use Magento\Framework\Registry;
@@ -22,9 +22,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class CategoryImportCommand extends Command
 {
     /**
-     * @var CategoryQueueProcessor
+     * @var CategoryQueueProcessorFactory
      */
-    private $categoryQueueProcessor;
+    private $categoryQueueProcessorFactory;
 
     /**
      * @var State
@@ -39,20 +39,20 @@ class CategoryImportCommand extends Command
     /**
      * CategoryImport constructor.
      *
-     * @param CategoryQueueProcessor $categoryQueueProcessor
+     * @param CategoryQueueProcessorFactory $categoryQueueProcessorFactory
      * @param State $state
      * @param Registry $registry
      * @param null $name
      */
     public function __construct(
-        CategoryQueueProcessor $categoryQueueProcessor,
+        CategoryQueueProcessorFactory $categoryQueueProcessorFactory,
         State $state,
         Registry $registry,
         $name = null
     ) {
         parent::__construct($name);
 
-        $this->categoryQueueProcessor = $categoryQueueProcessor;
+        $this->categoryQueueProcessorFactory = $categoryQueueProcessorFactory;
         $this->state = $state;
         $this->registry = $registry;
     }
@@ -91,7 +91,9 @@ class CategoryImportCommand extends Command
         $output->writeln(sprintf('<info>Started at %s</info>', (new \DateTime())->format('Y-m-d H:i:s')));
         $output->writeln('Processing...');
 
-        $this->categoryQueueProcessor->process();
+        $categoryQueueProcessor = $this->categoryQueueProcessorFactory->create();
+
+        $categoryQueueProcessor->process();
 
         $end = $this->getCurrentMs();
 
