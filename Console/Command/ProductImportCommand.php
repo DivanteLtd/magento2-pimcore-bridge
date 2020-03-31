@@ -8,7 +8,7 @@
 
 namespace Divante\PimcoreIntegration\Console\Command;
 
-use Divante\PimcoreIntegration\Queue\Processor\ProductQueueProcessor;
+use Divante\PimcoreIntegration\Queue\Processor\ProductQueueProcessorFactory;
 use Magento\Framework\App\State;
 use Magento\Framework\Registry;
 use Symfony\Component\Console\Command\Command;
@@ -21,9 +21,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class ProductImportCommand extends Command
 {
     /**
-     * @var ProductQueueProcessor
+     * @var ProductQueueProcessorFactory
      */
-    private $productQueueProcessor;
+    private $productQueueProcessorFactory;
 
     /**
      * @var State
@@ -38,20 +38,20 @@ class ProductImportCommand extends Command
     /**
      * ProductImport constructor.
      *
-     * @param ProductQueueProcessor $productQueueProcessor
+     * @param ProductQueueProcessorFactory $productQueueProcessorFactory
      * @param State $state
      * @param Registry $registry
      * @param null $name
      */
     public function __construct(
-        ProductQueueProcessor $productQueueProcessor,
+        ProductQueueProcessorFactory $productQueueProcessorFactory,
         State $state,
         Registry $registry,
         $name = null
     ) {
         parent::__construct($name);
 
-        $this->productQueueProcessor = $productQueueProcessor;
+        $this->productQueueProcessorFactory = $productQueueProcessorFactory;
         $this->state = $state;
         $this->registry = $registry;
     }
@@ -90,7 +90,9 @@ class ProductImportCommand extends Command
         $output->writeln(sprintf('<info>Started at %s</info>', (new \DateTime())->format('Y-m-d H:i:s')));
         $output->writeln('Processing...');
 
-        $this->productQueueProcessor->process();
+        $productQueueProcessor = $this->productQueueProcessorFactory->create();
+
+        $productQueueProcessor->process();
 
         $end = $this->getCurrentMs();
 

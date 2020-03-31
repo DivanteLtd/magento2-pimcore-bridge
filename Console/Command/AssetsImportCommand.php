@@ -8,7 +8,7 @@
 
 namespace Divante\PimcoreIntegration\Console\Command;
 
-use Divante\PimcoreIntegration\Queue\Processor\AssetQueueProcessor;
+use Divante\PimcoreIntegration\Queue\Processor\AssetQueueProcessorFactory;
 use Magento\Framework\App\State;
 use Magento\Framework\Registry;
 use Symfony\Component\Console\Command\Command;
@@ -21,9 +21,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 class AssetsImportCommand extends Command
 {
     /**
-     * @var AssetQueueProcessor
+     * @var AssetQueueProcessorFactory
      */
-    private $queueProcessor;
+    private $queueProcessorFactory;
 
     /**
      * @var State
@@ -38,14 +38,14 @@ class AssetsImportCommand extends Command
     /**
      * AssetsImportCommand constructor.
      *
-     * @param AssetQueueProcessor $queueProcessor
+     * @param AssetQueueProcessorFactory $queueProcessorFactory
      * @param State $state
      * @param Registry $registry
      * @param null $name
      */
-    public function __construct(AssetQueueProcessor $queueProcessor, State $state, Registry $registry, $name = null)
+    public function __construct(AssetQueueProcessorFactory $queueProcessorFactory, State $state, Registry $registry, $name = null)
     {
-        $this->queueProcessor = $queueProcessor;
+        $this->queueProcessorFactory = $queueProcessorFactory;
         $this->state = $state;
         $this->registry = $registry;
 
@@ -84,7 +84,9 @@ class AssetsImportCommand extends Command
         $output->writeln(sprintf('<info>Started at %s</info>', (new \DateTime())->format('Y-m-d H:i:s')));
         $output->writeln('Processing...');
 
-        $this->queueProcessor->process();
+        $queueProcessor = $this->queueProcessorFactory->create();
+
+        $queueProcessor->process();
 
         $end = $this->getCurrentMs();
 
