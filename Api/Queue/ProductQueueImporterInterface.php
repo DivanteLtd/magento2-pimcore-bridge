@@ -22,7 +22,7 @@ interface ProductQueueImporterInterface
      *
      * @param ProductQueueInterface $data
      *
-     * @return array
+     * @return string[]
      */
     public function insertOrUpdate(ProductQueueInterface $data): array;
 
@@ -31,7 +31,7 @@ interface ProductQueueImporterInterface
      *
      * @param int $productId
      *
-     * @return array
+     * @return string[]
      */
     public function delete(int $productId): array;
 }
