@@ -74,7 +74,7 @@ class CategoryQueueImporter extends AbstractImporter implements CategoryQueueImp
      *
      * @param CategoryQueueInterface $data
      *
-     * @return array
+     * @return string[]
      */
     public function insertOrUpdate(CategoryQueueInterface $data): array
     {
@@ -87,7 +87,7 @@ class CategoryQueueImporter extends AbstractImporter implements CategoryQueueImp
      * @param int $categoryId
      *
      * @throws \Divante\PimcoreIntegration\Exception\InvalidQueueTypeException
-     * @return array
+     * @return string[]
      */
     public function delete(int $categoryId): array
     {
