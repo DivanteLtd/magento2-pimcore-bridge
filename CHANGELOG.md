@@ -1,3 +1,8 @@
+1.0.5.5
+=============
+* add .gitignore
+* update console commands to be compatible with 2.3.x
+
 1.0.5.4
 =============
 * GitHub PR:
