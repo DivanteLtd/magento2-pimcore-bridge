@@ -83,7 +83,7 @@ class CategoryImportCommand extends Command
             // fail gracefully
         }
 
-        $this->registry->register('isSecureArea', true);
+        $this->registry->register('isSecureArea', true, true);
 
         $start = $this->getCurrentMs();
 
