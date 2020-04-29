@@ -24,14 +24,22 @@ class YesnoStrategy extends AbstractStrategy
         $eavSetup->addAttribute(
             Product::ENTITY,
             $this->code,
-            array_merge(self::$defaultAttrConfig, [
-                'type' => 'int',
-                'label'  => $this->attrData['label'],
-                'input'  => 'boolean',
-                'source' => \Magento\Eav\Model\Entity\Attribute\Source\Boolean::class,
-            ])
+            $this->getMergedConfig($this->getBaseAttrConfig())
         );
 
         return $eavSetup->getAttributeId(Product::ENTITY, $this->code);
+    }
+
+    /**
+     * @return array
+     */
+    public function getBaseAttrConfig(): array
+    {
+        return [
+            'type' => 'int',
+            'label'  => $this->attrData['label'],
+            'input'  => 'boolean',
+            'source' => \Magento\Eav\Model\Entity\Attribute\Source\Boolean::class,
+        ];
     }
 }

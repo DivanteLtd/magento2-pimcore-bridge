@@ -77,4 +77,19 @@ abstract class  AbstractStrategy implements AttributeCreationStrategyInterface
         $this->attrData = $attrData;
         $this->code = $code;
     }
+
+    /**
+     * @param array $base
+     *
+     * @return array
+     */
+    public function getMergedConfig(array $base = []): array
+    {
+        return array_merge(self::$defaultAttrConfig, $base, $this->attrData['attr_conf'] ?? []);
+    }
+
+    /**
+     * @return array
+     */
+    abstract public function getBaseAttrConfig(): array;
 }
