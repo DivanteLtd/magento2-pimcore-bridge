@@ -1,3 +1,7 @@
+1.0.7
+=============
+* add price override configuration `configuration/prices/is_override_enabled`. If yes then price from Pimcore will override current price, otherwise price will be set only on the first one.
+
 1.0.6.0
 =============
 * now it is possible to configure attribute data from a Pimcore. Additional informations kept in 'attr_conf' key in attribute will be merged and override default configuration of an attribute. `\Divante\PimcoreIntegration\Model\Catalog\Product\Attribute\Creator\Strategy\AbstractStrategy::getMergedConfig`

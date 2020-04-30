@@ -9,6 +9,7 @@
 namespace Divante\PimcoreIntegration\Queue\Action\Product;
 
 use Divante\PimcoreIntegration\Api\Pimcore\PimcoreProductInterface;
+use Divante\PimcoreIntegration\System\ConfigInterface;
 use Magento\Catalog\Model\Product;
 
 /**
@@ -22,6 +23,21 @@ class PriceModifier implements DataModifierInterface
     public static $defaultPriceValue = 0;
 
     /**
+     * @var ConfigInterface
+     */
+    private $config;
+
+    /**
+     * PriceModifier constructor.
+     *
+     * @param ConfigInterface $config
+     */
+    public function __construct(ConfigInterface $config)
+    {
+        $this->config = $config;
+    }
+
+    /**
      * @param Product $product
      * @param PimcoreProductInterface $pimcoreProduct
      *
@@ -32,12 +48,26 @@ class PriceModifier implements DataModifierInterface
         if (null === $pimcoreProduct->getData('price') && null === $product->getPrice()) {
             $pimcoreProduct->setData('price', self::$defaultPriceValue);
             $pimcoreProduct->setData('base_price', self::$defaultPriceValue);
-        } elseif (null !== $product->getPrice()) {
-            $pimcoreProduct->setData('price', $product->getPrice());
+        } elseif ($this->isPriceAlreadySet($product)) {
+            if ($this->config->getIsPriceOverride()) {
+                $pimcoreProduct->setData('price', $pimcoreProduct->getData('price') ?? self::$defaultPriceValue);
+            } else {
+                $pimcoreProduct->setData('price', $product->getPrice());
+            }
         }
 
         $pimcoreProduct->setData('base_price', $pimcoreProduct->getData('price'));
 
         return [$product, $pimcoreProduct];
+    }
+
+    /**
+     * @param Product $product
+     *
+     * @return bool
+     */
+    private function isPriceAlreadySet(Product $product): bool
+    {
+        return (null !== $product->getPrice());
     }
 }
