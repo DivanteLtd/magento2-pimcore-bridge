@@ -38,27 +38,6 @@ abstract class  AbstractStrategy implements AttributeCreationStrategyInterface
     protected $code;
 
     /**
-     * @var array
-     */
-    protected static $defaultAttrConfig = [
-        'backend'                 => '',
-        'frontend'                => '',
-        'input'                   => 'text',
-        'class'                   => '',
-        'source'                  => '',
-        'global'                  => ScopedAttributeInterface::SCOPE_STORE,
-        'visible'                 => true,
-        'required'                => false,
-        'user_defined'            => true,
-        'searchable'              => true,
-        'filterable'              => true,
-        'comparable'              => true,
-        'visible_on_front'        => true,
-        'used_in_product_listing' => true,
-        'unique'                  => false,
-    ];
-
-    /**
      * AbstractStrategy constructor.
      *
      * @param EavSetupFactory $eavSetupFactory
@@ -85,11 +64,35 @@ abstract class  AbstractStrategy implements AttributeCreationStrategyInterface
      */
     public function getMergedConfig(array $base = []): array
     {
-        return array_merge(self::$defaultAttrConfig, $base, $this->attrData['attr_conf'] ?? []);
+        return array_merge($this->getDefaultAttributeConfig(), $base, $this->attrData['attr_conf'] ?? []);
     }
 
     /**
      * @return array
      */
     abstract public function getBaseAttrConfig(): array;
+
+    /**
+     * @return array
+     */
+    public function getDefaultAttributeConfig(): array
+    {
+        return [
+            'backend' => '',
+            'frontend' => '',
+            'input' => 'text',
+            'class' => '',
+            'source' => '',
+            'global' => ScopedAttributeInterface::SCOPE_STORE,
+            'visible' => true,
+            'required' => false,
+            'user_defined' => true,
+            'searchable' => true,
+            'filterable' => true,
+            'comparable' => true,
+            'visible_on_front' => true,
+            'used_in_product_listing' => true,
+            'unique' => false,
+        ];
+    }
 }

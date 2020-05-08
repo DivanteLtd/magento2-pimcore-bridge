@@ -22,7 +22,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 class AbstractStrategyTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var MockObject|EavSetupFactory\
+     * @var MockObject|EavSetupFactory
      */
     private $eavSetupFactoryMock;
 
@@ -98,7 +98,7 @@ class AbstractStrategyTest extends \PHPUnit\Framework\TestCase
     public function testGetDefaultAttrConfig()
     {
         $strategy = $this->getAbstractStrategyMockImplementation('test');
-        $this->assertEquals($this->defaultAttrConfig, $strategy->getDefaultAttrConfig());
+        $this->assertEquals($this->defaultAttrConfig, $strategy->getDefaultAttributeConfig());
     }
 
     /**

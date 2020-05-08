@@ -8,31 +8,13 @@
 
 namespace Divante\PimcoreIntegration\Test\Unit\Model\Catalog\Product\Attribute\Creator\Strategy;
 
-use Divante\PimcoreIntegration\Model\Catalog\Product\Attribute\Creator\Strategy\TextStrategy;
-use Magento\Catalog\Model\Category\AttributeRepository;
-use Magento\Catalog\Model\Product;
-use Magento\Eav\Api\AttributeRepositoryInterface;
-use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
-use Magento\Eav\Setup\EavSetup;
-use Magento\Eav\Setup\EavSetupFactory;
-use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
-use PHPUnit\Framework\MockObject\MockObject;
+use Divante\PimcoreIntegration\Model\Catalog\Product\Attribute\Creator\Strategy\QuantityValueStrategy;
 
 /**
- * Class TextStrategyTest
+ * Class QuantityValueStrategyTest
  */
-class TextStrategyTest extends BaseTestAbstract
+class QuantityValueStrategyTest extends BaseTestAbstract
 {
-    /**
-     * @return array[]
-     */
-    public function attrDataProvider(): array
-    {
-        return [
-            [['label' => 'test_label'], 'test'],
-        ];
-    }
-
     /**
      * @dataProvider attrDataProvider
      */
@@ -55,11 +37,21 @@ class TextStrategyTest extends BaseTestAbstract
     }
 
     /**
+     * @return array|array[]
+     */
+    public function attrDataProvider(): array
+    {
+        return [
+            [['label' => 'quantity', 'unit' => 'km'], 'test'],
+        ];
+    }
+
+    /**
      * @return string
      */
     public function getStrategyClass(): string
     {
-        return TextStrategy::class;
+        return QuantityValueStrategy::class;
     }
 
     /**
@@ -68,8 +60,8 @@ class TextStrategyTest extends BaseTestAbstract
     public function getBaseAttrConfig(): array
     {
         return [
-            'type' => 'varchar',
-            'label' => 'test_label',
+            'type' => 'decimal',
+            'label' => 'quantity (km)',
             'input' => 'text',
         ];
     }

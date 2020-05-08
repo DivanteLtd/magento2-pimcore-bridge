@@ -1,3 +1,7 @@
+1.0.8
+=============
+- add quantity value strategy type
+
 1.0.7
 =============
 * add price override configuration `configuration/prices/is_override_enabled`. If yes then price from Pimcore will override current price, otherwise price will be set only on the first one.
