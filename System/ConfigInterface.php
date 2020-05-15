@@ -31,7 +31,7 @@ interface ConfigInterface
     /**
      * Configuration path for rices override settings
      */
-    const XML_PATH_PRICES_OVERRIDE = 'cron/prices/is_override_enabled';
+    const XML_PATH_PRICES_OVERRIDE = 'configuration/prices/is_override_enabled';
 
     /**
      * Configuration path for Pimcore API Key used for request authorization

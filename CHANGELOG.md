@@ -1,3 +1,7 @@
+1.0.8.1
+=============
+- add missing data transformator for a quantityValue type attribute
+
 1.0.8
 =============
 - add quantity value strategy type
