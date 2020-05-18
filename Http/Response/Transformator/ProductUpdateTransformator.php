@@ -73,14 +73,13 @@ class ProductUpdateTransformator implements ResponseTransformatorInterface
     /**
      * @param Response $response
      *
-     * @throws LocalizedException
      * @return DataObject
+     * @throws LocalizedException
      */
     public function transform(Response $response): DataObject
     {
         $dataObject = $this->dataObjectFactory->create();
         $rawResponse = json_decode($response->getBody(), true);
-
         /** @var array $rawData */
         $rawData = $rawResponse['data'];
 

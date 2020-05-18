@@ -1,3 +1,7 @@
+1.0.9
+=============
+- now supports also visual swatches
+
 1.0.8.1
 =============
 - add missing data transformator for a quantityValue type attribute

@@ -42,17 +42,17 @@ abstract class AbstractOptionTypeStrategy extends AbstractStrategy
     /**
      * @var OptionResolver
      */
-    private $optionResolver;
+    protected $optionResolver;
 
     /**
      * @var ResourceConnection
      */
-    private $resource;
+    protected $resource;
 
     /**
      * @var AttributeFactory
      */
-    private $attributeFactory;
+    protected $attributeFactory;
 
     /**
      * SelectStrategy constructor.

@@ -65,6 +65,8 @@ The following types of attributes are supported:
 * multiselect
 * wysiwyg
 * object
+* quantity-value
+* visual swatch
 
 *Object* is a special type of attribute that emits an event which allows us to implement any complex attribute type via third  party services.
 
