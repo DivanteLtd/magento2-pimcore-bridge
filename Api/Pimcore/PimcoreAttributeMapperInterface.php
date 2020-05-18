@@ -69,6 +69,11 @@ interface PimcoreAttributeMapperInterface
     const MULTISELECT = 'multiselect';
 
     /**
+     * Pimcore multiselect type object
+     */
+    const VISUALSWATCH = 'visualswatch';
+
+    /**
      * @param array $attributeData
      *
      * @return mixed

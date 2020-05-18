@@ -250,7 +250,7 @@ class NewAttributeListener implements ObserverInterface
      */
     private function isSelectType(string $type): bool
     {
-        return ($type === 'select' || $type === 'multiselect');
+        return ($type === 'select' || $type === 'multiselect' || $type === 'visualswatch');
     }
 
     /**

@@ -3,7 +3,9 @@
     "description": "Magento-Pimcore bridge module.",
     "version": "1.0.5.4",
     "require": {
-        "magento/product-community-edition": "^2.2 || ^2.3"
+        "magento/product-community-edition": "^2.2 || ^2.3",
+        "ext-fileinfo": "*",
+        "ext-json": "*"
     },
     "type": "magento2-module",
     "license": [
