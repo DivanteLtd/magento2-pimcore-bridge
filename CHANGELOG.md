@@ -1,3 +1,7 @@
+1.0.9.1
+=============
+- visual swatch can be set as a configurable attribute
+
 1.0.9
 =============
 - now supports also visual swatches
