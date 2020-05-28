@@ -13,6 +13,7 @@ use Divante\PimcoreIntegration\Model\Eav\Entity\OptionResolver;
 use Magento\Catalog\Model\Product;
 use Magento\Eav\Api\AttributeOptionManagementInterface;
 use Magento\Eav\Api\AttributeRepositoryInterface;
+use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
 use Magento\Eav\Model\Entity\Attribute\Source\Table;
 use Magento\Eav\Model\Entity\AttributeFactory;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute;
@@ -203,12 +204,28 @@ class VisualswatchStrategy extends AbstractOptionTypeStrategy
      */
     public function getBaseAttrConfig(): array
     {
-        return [
+        $data = [
             'type' => 'varchar',
             'label' => $this->attrData['label'],
             'input' => Swatch::SWATCH_TYPE_VISUAL_ATTRIBUTE_FRONTEND_INPUT,
             'user_defined' => true,
             'source' => Table::class,
         ];
+
+        if ($this->isConfigurable()) {
+            $data = array_merge($data, [
+                'global' => ScopedAttributeInterface::SCOPE_GLOBAL
+            ]);
+        }
+
+        return $data;
+    }
+
+    /**
+     * @return bool
+     */
+    private function isConfigurable(): bool
+    {
+        return (!empty($this->attrData['is_configurable']) && true === $this->attrData['is_configurable']);
     }
 }
