@@ -42,7 +42,7 @@ class EavAttributeOptionModifier implements DataModifierInterface
     {
         foreach ($pimcoreProduct->getData() as $code => $attr) {
             if (empty($attr['type'])
-                || ($attr['type'] !== 'select' && $attr['type'] !== 'multiselect')
+                || ($attr['type'] !== 'select' && $attr['type'] !== 'multiselect' && $attr['type'] !== 'visualswatch')
                 || !is_array($attr)
             ) {
                 continue;
@@ -54,6 +54,8 @@ class EavAttributeOptionModifier implements DataModifierInterface
                 $value = $this->optionResolver->resolveOptionId($attr['value'], $code);
             } elseif ($attr['type'] === 'multiselect') {
                 $value = $this->optionResolver->resolveMultipleOptionIds($attr['value'], $code);
+            } elseif ($attr['type'] === 'visualswatch') {
+                $value = $this->optionResolver->resolveOptionId($attr['value'], $code);
             }
 
             if (!$value) {

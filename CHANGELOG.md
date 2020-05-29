@@ -1,3 +1,7 @@
+1.0.9.2
+=============
+- refactor creating visual swatch
+
 1.0.9.1
 =============
 - visual swatch can be set as a configurable attribute

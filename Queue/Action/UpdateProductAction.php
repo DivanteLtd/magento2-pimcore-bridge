@@ -137,9 +137,10 @@ class UpdateProductAction implements ActionInterface
         if (!$response->isSuccess()) {
             throw new LocalizedException(
                 __(
-                    'Invalid product data fetch ID "%1", error code: "%2"',
+                    'Invalid product data fetch ID "%1", error code: "%2", context: %3',
                     $queue->getPimcoreId(),
-                    $response->getStatusCode()
+                    $response->getStatusCode(),
+                    $response->getContent()
                 )
             );
         }

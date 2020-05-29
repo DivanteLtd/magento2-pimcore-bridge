@@ -19,6 +19,7 @@ use Magento\Eav\Model\Entity\AttributeFactory;
 use Magento\Eav\Model\ResourceModel\Entity\Attribute;
 use Magento\Eav\Setup\EavSetupFactory;
 use Magento\Framework\App\ResourceConnection;
+use Magento\Framework\Exception\LocalizedException;
 use Magento\Store\Model\StoreManagerInterface;
 use Magento\Swatches\Model\Swatch;
 
@@ -95,25 +96,16 @@ class VisualswatchStrategy extends AbstractOptionTypeStrategy
             $eavAttribute = $this->getEavAttribute();
         }
 
-        $options['value'] = array_filter($options['value'], function ($option) {
-            $value = $option[$this->storeManager->getStore()->getId()];
+        foreach ($options['value'] as $pimcoreId => $option) {
+            $optionId = $this->getOptionId($eavAttribute->getId(), $pimcoreId);
 
-            //TODO this is a good place to refactor to collect and filter array with one request
-            return !$this->getOptionId($this->getAttributeId(), $value);
-        });
-
-        if (!empty($options['value'])) {
-            foreach ($options['value'] as $pimcoreId => $option) {
-                $optionId = $this->getOptionId($eavAttribute->getId(), $pimcoreId);
-
-                if (!$optionId) {
-                    $optionId = $this->createAttributeOption($eavAttribute->getId(), $pimcoreId);
-                }
-
-                $optionValues = ['value' => [$pimcoreId => $options['value'][$pimcoreId]]];
-                $this->insertOptionValues($optionId, $optionValues);
-                $this->insertSwatchValues($optionId, $swatches['swatch'][$pimcoreId]);
+            if (!$optionId) {
+                $optionId = $this->createAttributeOption($eavAttribute->getId(), $pimcoreId);
             }
+
+            $optionValues = ['value' => [$pimcoreId => $options['value'][$pimcoreId]]];
+            $this->insertOptionValues($optionId, $optionValues);
+            $this->insertSwatchValues($optionId, $swatches);
         }
 
         return $eavAttribute->getAttributeId();
@@ -124,15 +116,14 @@ class VisualswatchStrategy extends AbstractOptionTypeStrategy
      */
     protected function prepareOptions(): array
     {
-        $options = [];
+        $value = $this->attrData['value']['value'];
+        $label = $this->attrData['value']['key'];
 
-        foreach ($this->attrData['value'] as $option) {
-            if (!isset($option['key'])) {
-                continue;
-            }
-            $label = $option['key'];
-            $options['value'][$option['value']] = [0 => $label, $this->storeManager->getStore()->getId() => $label];
-        }
+        $options = [
+            'value' => [
+                sprintf($value) => [0 => $label, $this->storeManager->getStore()->getId() => $label],
+            ],
+        ];
 
         return $options;
     }
@@ -142,45 +133,36 @@ class VisualswatchStrategy extends AbstractOptionTypeStrategy
      */
     protected function prepareSwatches(): array
     {
-        foreach ($this->attrData['value'] as $option) {
-            if (!isset($option['key'])) {
-                continue;
-            }
+        $value = $this->attrData['value']['swatch_value'];
 
-            $value = $option['swatch_value'];
-
-            if ($option['swatch_type'] == 1) {
-                $value = $this->swatchManager->createVisualSwatchFromBase64($option['key'], $value);
-            }
-
-            $swatch = ['type' => $option['swatch_type'], 'value' => $value];
-            $swatches['swatch'][$option['value']] = [0 => $swatch];
+        if ($this->attrData['value']['swatch_type'] == 2) {
+            $value = $this->swatchManager->createVisualSwatchFromBase64($this->attrData['value']['key'], $value);
         }
 
-        return $swatches;
+        $swatch = ['type' => $this->attrData['value']['swatch_type'], 'value' => $value];
+
+        return $swatch;
     }
 
     /**
      * @param string $optionId
-     * @param array $swatches
+     * @param array $swatch
      */
-    protected function insertSwatchValues(string $optionId, array $swatches)
+    protected function insertSwatchValues(string $optionId, array $swatch)
     {
         $connection = $this->resource->getConnection();
 
         $tableName = $connection->getTableName('eav_attribute_option_swatch');
-        foreach ($swatches as $storeId => $swatch) {
-            $connection->insertOnDuplicate(
-                $tableName,
-                [
-                    'option_id' => $optionId,
-                    'store_id' => $storeId,
-                    'value' => $swatch['value'],
-                    'type' => $swatch['type'],
-                ],
-                ['option_id', 'store_id', 'value', 'type']
-            );
-        }
+        $connection->insertOnDuplicate(
+            $tableName,
+            [
+                'option_id' => $optionId,
+                'store_id' => 0, // is always saved in default
+                'value' => $swatch['value'],
+                'type' => $swatch['type'],
+            ],
+            ['option_id', 'store_id', 'value', 'type']
+        );
     }
 
     /**
@@ -191,12 +173,15 @@ class VisualswatchStrategy extends AbstractOptionTypeStrategy
     protected function createNewAttribute(array $options)
     {
         $eavSetup = $this->eavSetupFactory->create();
-
         $eavSetup->addAttribute(
             Product::ENTITY,
             $this->code,
             $this->getMergedConfig($this->getBaseAttrConfig())
         );
+
+        $eavAttribute = $this->attributeRepository->get('catalog_product', $this->code);
+        $eavAttribute->setData('swatch_input_type', 'visual');
+        $this->attributeRepository->save($eavAttribute);
     }
 
     /**
@@ -207,14 +192,15 @@ class VisualswatchStrategy extends AbstractOptionTypeStrategy
         $data = [
             'type' => 'varchar',
             'label' => $this->attrData['label'],
-            'input' => Swatch::SWATCH_TYPE_VISUAL_ATTRIBUTE_FRONTEND_INPUT,
             'user_defined' => true,
             'source' => Table::class,
+            'swatch_input_type' => 'visual',
+            'input' => 'select',
         ];
 
         if ($this->isConfigurable()) {
             $data = array_merge($data, [
-                'global' => ScopedAttributeInterface::SCOPE_GLOBAL
+                'global' => ScopedAttributeInterface::SCOPE_GLOBAL,
             ]);
         }
 
