@@ -102,21 +102,9 @@ class SimpleAttributeMapper implements PimcoreAttributeMapperInterface
      */
     private function mapVisualSwatch(array $attributeData): array
     {
-        $values = [];
-        $colorSwatchType = 2;
-        if ($attributeData['value'] && \is_array($attributeData['value'])) {
-            foreach ($attributeData['value'] as $data) {
-                $swatches[] = [
-                    'value' => $data['key'] ?? '',
-                    'swatch_type' => $data['swatch_type'] ?? $colorSwatchType,
-                    'swatch_value' => $data['swatch_value'],
-                ];
-            }
-        }
-
         return [
             'type' => 'visualswatch',
-            'swatches' => $swatches,
+            'value' => $attributeData['value']['key'] ?? '',
         ];
     }
 

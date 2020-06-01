@@ -1,7 +1,7 @@
 {
     "name": "divante-ltd/module-pimcore-integration",
     "description": "Magento-Pimcore bridge module.",
-    "version": "1.0.9.1",
+    "version": "1.0.9.2",
     "require": {
         "magento/product-community-edition": "^2.2 || ^2.3",
         "ext-fileinfo": "*",
