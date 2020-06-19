@@ -64,7 +64,7 @@ class SelectStrategy extends AbstractOptionTypeStrategy
 
         $options = [
             'value' => [
-                sprintf($value) => [0 => $label, $this->storeManager->getStore()->getId() => $label],
+                $value => [0 => $label, $this->storeManager->getStore()->getId() => $label],
             ],
         ];
 
