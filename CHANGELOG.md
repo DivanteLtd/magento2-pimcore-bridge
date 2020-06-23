@@ -1,3 +1,7 @@
+1.0.9.3
+=============
+- add description and short description to excluded attributes
+
 1.0.9.2
 =============
 - refactor creating visual swatch
