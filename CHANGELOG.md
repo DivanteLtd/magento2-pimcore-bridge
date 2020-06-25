@@ -1,3 +1,7 @@
+1.0.9.4
+=============
+- fix broken translation for attributes labels
+
 1.0.9.3
 =============
 - add description and short description to excluded attributes
