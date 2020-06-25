@@ -13,6 +13,7 @@ use Magento\Eav\Api\AttributeRepositoryInterfaceFactory;
 use Magento\Eav\Api\Data\AttributeInterface;
 use Magento\Eav\Model\Config;
 use Magento\Eav\Model\ConfigFactory as EavConfigFactory;
+use Magento\Eav\Model\Entity\Attribute\FrontendLabelFactory;
 use Magento\Framework\App\ResourceConnection;
 use Magento\Framework\Exception\LocalizedException;
 use Magento\Framework\Exception\StateException;
@@ -38,29 +39,37 @@ class LabelManager
     private $resource;
 
     /**
+     * @var FrontendLabelFactory
+     */
+    private $frontendLabelFactory;
+
+    /**
      * LabelManager constructor.
      *
      * @param AttributeRepositoryInterfaceFactory $attrRepositoryFactory
      * @param EavConfigFactory $configFactory
      * @param ResourceConnection $resource
+     * @param FrontendLabelFactory $frontendLabelFactory
      */
     public function __construct(
         AttributeRepositoryInterfaceFactory $attrRepositoryFactory,
         EavConfigFactory $configFactory,
-        ResourceConnection $resource
+        ResourceConnection $resource,
+        FrontendLabelFactory $frontendLabelFactory
     ) {
         $this->attrRepositoryFactory = $attrRepositoryFactory;
         $this->configFactory = $configFactory;
         $this->resource = $resource;
+        $this->frontendLabelFactory = $frontendLabelFactory;
     }
 
     /**
      * @param string $attrCode
      * @param array $labels
      *
+     * @return void
      * @throws StateException
      *
-     * @return void
      */
     public function saveLabelsForAttribute(string $attrCode, array $labels)
     {
@@ -86,7 +95,7 @@ class LabelManager
             return;
         }
 
-        $attr->setStoreLabels($labelsToSave);
+        $attr->setFrontendLabels($this->resolveFrontendLabels($labelsToSave));
         $attrRepository->save($attr);
     }
 
@@ -103,6 +112,7 @@ class LabelManager
 
     /**
      * @param int $attrId
+     *
      * @return array
      */
     private function getStoreLabels(int $attrId)
@@ -120,5 +130,22 @@ class LabelManager
         }
 
         return $labels;
+    }
+
+    /**
+     * @param array $labelsToSave
+     *
+     * @return array
+     */
+    private function resolveFrontendLabels(array $labelsToSave): array
+    {
+        $frontendLabels = [];
+        foreach ($labelsToSave as $storeId => $translation) {
+            $label = $this->frontendLabelFactory->create();
+            $label->setStoreId($storeId)->setLabel($translation);
+            $frontendLabels[] = $label;
+        }
+
+        return $frontendLabels;
     }
 }
