@@ -26,7 +26,7 @@ interface AssetQueueInterface extends QueueInterface
     const ASSET_TARGET_ENTITY_ID = 'entity_id';
 
     /**
-     * @return int|null
+     * @return string|null
      */
     public function getAssetId();
 

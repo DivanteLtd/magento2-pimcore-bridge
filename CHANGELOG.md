@@ -1,3 +1,7 @@
+1.0.10
+=============
+- change asset id column type int -> varchar
+
 1.0.9.4
 =============
 - fix broken translation for attributes labels
