@@ -1,3 +1,7 @@
+1.0.10.1
+=============
+- update media gallery types to make it open for plugins
+
 1.0.10
 =============
 - change asset id column type int -> varchar
