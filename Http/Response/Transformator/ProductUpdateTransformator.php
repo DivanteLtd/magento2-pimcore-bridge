@@ -122,7 +122,7 @@ class ProductUpdateTransformator implements ResponseTransformatorInterface
      */
     private function mergeGalleryWithMediaTypes(PimcoreProductInterface $pimcoreProduct): array
     {
-        $mediaTypes = ['small_image', 'thumbnail', 'image'];
+        $mediaTypes = $this->getMediaTypes();
         $toGallery = [];
 
         foreach ($mediaTypes as $type) {
@@ -150,5 +150,13 @@ class ProductUpdateTransformator implements ResponseTransformatorInterface
         }
 
         return $newMediaGallery;
+    }
+
+    /**
+     * @return array|string[]
+     */
+    public function getMediaTypes(): array
+    {
+        return ['small_image', 'thumbnail', 'image'];
     }
 }
