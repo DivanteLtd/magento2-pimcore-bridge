@@ -39,6 +39,17 @@ class UpgradeSchema implements UpgradeSchemaInterface
             $this->addChecksumColToEavAttributeSetTable($setup);
             $this->addPimIdToEavOption($setup);
         }
+
+        if (version_compare($context->getVersion(), '1.0.6') < 0) {
+            $setup->getConnection()->modifyColumn(
+                $setup->getTable(AssetQueueInterface::SCHEMA_NAME),
+                'asset_id',
+                [
+                    'type' => Table::TYPE_TEXT,
+                    'length' => 50,
+                ]
+            );
+        }
     }
 
     /**

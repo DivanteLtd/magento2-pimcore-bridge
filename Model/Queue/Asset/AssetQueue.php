@@ -31,7 +31,7 @@ class AssetQueue extends AbstractQueue implements AssetQueueInterface
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
     public function getAssetId()
     {
