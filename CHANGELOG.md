@@ -1,3 +1,7 @@
+1.0.10.2
+=============
+- fix asset queue id data type
+
 1.0.10.1
 =============
 - update media gallery types to make it open for plugins

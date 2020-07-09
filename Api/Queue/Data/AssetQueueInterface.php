@@ -31,11 +31,11 @@ interface AssetQueueInterface extends QueueInterface
     public function getAssetId();
 
     /**
-     * @param int $assetId
+     * @param string $assetId
      *
      * @return AssetQueueInterface
      */
-    public function setAssetId(int $assetId): AssetQueueInterface;
+    public function setAssetId(string $assetId): AssetQueueInterface;
 
     /**
      * @return string|null
