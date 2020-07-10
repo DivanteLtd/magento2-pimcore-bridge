@@ -1,3 +1,7 @@
+1.0.11
+=============
+- asset request endpoint has been changed to get optimized images
+
 1.0.10.2
 =============
 - fix asset queue id data type
