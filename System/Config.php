@@ -142,4 +142,12 @@ class Config implements ConfigInterface
     {
         return (bool) $this->scopeConfig->getValue(static::XML_PATH_CRON_PUBLISH_IS_ACTIVE, $this->scope);
     }
+
+    /**
+     * @return bool
+     */
+    public function getIsPriceOverride(): bool
+    {
+        return (bool) $this->scopeConfig->getValue(static::XML_PATH_PRICES_OVERRIDE, $this->scope);
+    }
 }

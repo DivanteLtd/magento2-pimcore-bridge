@@ -26,13 +26,21 @@ class TextStrategy extends AbstractStrategy
         $eavSetup->addAttribute(
             Product::ENTITY,
             $this->code,
-            array_merge(self::$defaultAttrConfig, [
-                'type'  => 'varchar',
-                'label' => $this->attrData['label'],
-                'input' => 'text',
-            ])
+            $this->getMergedConfig($this->getBaseAttrConfig())
         );
 
         return $eavSetup->getAttributeId(Product::ENTITY, $this->code);
+    }
+
+    /**
+     * @return array
+     */
+    public function getBaseAttrConfig(): array
+    {
+        return [
+            'type'  => 'varchar',
+            'label' => $this->attrData['label'],
+            'input' => 'text',
+        ];
     }
 }

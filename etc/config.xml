@@ -6,6 +6,9 @@
                 <logger_type>0</logger_type>
                 <queue_outdated>60</queue_outdated>
             </basic>
+            <prices>
+                <is_override_enabled>1</is_override_enabled>
+            </prices>
         </configuration>
         <pimcore>
             <integration>

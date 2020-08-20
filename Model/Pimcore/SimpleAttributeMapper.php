@@ -31,6 +31,7 @@ class SimpleAttributeMapper implements PimcoreAttributeMapperInterface
             case self::YESNO:
             case self::DATETIME:
             case self::WYSIWYG:
+            case self::QVALUE:
                 return $this->mapText($attributeData);
             case self::SELECT:
                 return $this->mapSelect($attributeData);

@@ -29,6 +29,11 @@ interface ConfigInterface
     const XML_PATH_QUEUE_OUTDATED = 'configuration/basic/queue_outdated';
 
     /**
+     * Configuration path for rices override settings
+     */
+    const XML_PATH_PRICES_OVERRIDE = 'configuration/prices/is_override_enabled';
+
+    /**
      * Configuration path for Pimcore API Key used for request authorization
      */
     const XML_PATH_PIMCORE_API_KEY = 'pimcore/integration/api_key';
@@ -62,6 +67,7 @@ interface ConfigInterface
      * Configuration path for Asset Queue Process
      */
     const XML_PATH_CRON_PUBLISH_IS_ACTIVE = 'cron/enable_products/is_active';
+
 
     /**
      * @return bool
@@ -117,4 +123,9 @@ interface ConfigInterface
      * @return bool
      */
     public function getIsProductPublishActive(): bool;
+
+    /**
+     * @return bool
+     */
+    public function getIsPriceOverride(): bool;
 }

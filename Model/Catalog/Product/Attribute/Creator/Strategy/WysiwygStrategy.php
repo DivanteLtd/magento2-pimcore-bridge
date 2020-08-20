@@ -24,15 +24,23 @@ class WysiwygStrategy extends AbstractStrategy
         $eavSetup->addAttribute(
             Product::ENTITY,
             $this->code,
-            array_merge(self::$defaultAttrConfig, [
-                'type'                     => 'text',
-                'label'                    => $this->attrData['label'],
-                'input'                    => 'textarea',
-                'wysiwyg_enabled'          => true,
-                'is_html_allowed_on_front' => true,
-            ])
+            $this->getMergedConfig($this->getBaseAttrConfig())
         );
 
         return $eavSetup->getAttributeId(Product::ENTITY, $this->code);
+    }
+
+    /**
+     * @return array
+     */
+    public function getBaseAttrConfig(): array
+    {
+        return [
+            'type'                     => 'text',
+            'label'                    => $this->attrData['label'],
+            'input'                    => 'textarea',
+            'wysiwyg_enabled'          => true,
+            'is_html_allowed_on_front' => true,
+        ];
     }
 }

@@ -1,3 +1,24 @@
+1.0.8.1
+=============
+- add missing data transformator for a quantityValue type attribute
+
+1.0.8
+=============
+- add quantity value strategy type
+
+1.0.7
+=============
+* add price override configuration `configuration/prices/is_override_enabled`. If yes then price from Pimcore will override current price, otherwise price will be set only on the first one.
+
+1.0.6.0
+=============
+* now it is possible to configure attribute data from a Pimcore. Additional informations kept in 'attr_conf' key in attribute will be merged and override default configuration of an attribute. `\Divante\PimcoreIntegration\Model\Catalog\Product\Attribute\Creator\Strategy\AbstractStrategy::getMergedConfig`
+
+1.0.5.5
+=============
+* add .gitignore
+* update console commands to be compatible with 2.3.x
+
 1.0.5.4
 =============
 * GitHub PR:

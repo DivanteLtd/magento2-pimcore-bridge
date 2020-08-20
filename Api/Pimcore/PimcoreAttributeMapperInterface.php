@@ -34,6 +34,11 @@ interface PimcoreAttributeMapperInterface
     const WYSIWYG= 'wysiwyg';
 
     /**
+     * Pimcore quantityValue type
+     */
+    const QVALUE= 'quantityValue';
+
+    /**
      * Pimcore object type object
      */
     const OBJECT = 'object';
