@@ -55,7 +55,7 @@ class ConfigurableProductStrategy implements ProductTypeCreationStrategyInterfac
         /** @var PropertyInterface|null $optionsProperty */
         $optionsProperty = $product->getOptionsProperty();
 
-        if (null === $optionsProperty) {
+        if (null === $optionsProperty || empty($optionsProperty->getPropData())) {
             $this->throwInvalidDataStructureException($product);
         }
 
