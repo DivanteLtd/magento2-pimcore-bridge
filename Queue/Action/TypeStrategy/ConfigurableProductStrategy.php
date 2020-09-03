@@ -65,23 +65,6 @@ class ConfigurableProductStrategy implements ProductTypeCreationStrategyInterfac
             $this->throwInvalidDataStructureException($product);
         }
 
-        $invalidConfigurableAttrs = [];
-        foreach ($attrCodes as $code) {
-            if (!$product->getData($code)) {
-                $invalidConfigurableAttrs[] = $code;
-            }
-        }
-
-        if (!empty($invalidConfigurableAttrs)) {
-            throw new InvalidDataStructureException(
-                __(
-                    'Value of configurable attributes [%1] must be set for product with pimcore_id "%2"',
-                    implode(',', $invalidConfigurableAttrs),
-                    $product->getData('pimcore_id')
-                )
-            );
-        }
-
         foreach ($attrCodes as $code) {
             $attribute = $this->eavConfig->getAttribute(Product::ENTITY, $code);
             $options = $attribute->getOptions();
