@@ -22,28 +22,6 @@ use Magento\Eav\Model\Config;
 class ConfigurableProductStrategy implements ProductTypeCreationStrategyInterface
 {
     /**
-     * @var Config
-     */
-    private $eavConfig;
-
-    /**
-     * @var OptionsFactory
-     */
-    private $optionsFactory;
-
-    /**
-     * ConfigurableProductStrategy constructor.
-     *
-     * @param Config $eavConfig
-     * @param OptionsFactory $optionsFactory
-     */
-    public function __construct(Config $eavConfig, OptionsFactory $optionsFactory)
-    {
-        $this->eavConfig = $eavConfig;
-        $this->optionsFactory = $optionsFactory;
-    }
-
-    /**
      * @param ProductInterface $product
      *
      * @throws InvalidDataStructureException
@@ -52,66 +30,7 @@ class ConfigurableProductStrategy implements ProductTypeCreationStrategyInterfac
      */
     public function execute(ProductInterface $product): ProductInterface
     {
-        /** @var PropertyInterface|null $optionsProperty */
-        $optionsProperty = $product->getOptionsProperty();
-
-        if (null === $optionsProperty || empty($optionsProperty->getPropData())) {
-            $this->throwInvalidDataStructureException($product);
-        }
-
-        $attrCodes = explode(',', $optionsProperty->getPropData());
-
-        if (empty($attrCodes)) {
-            $this->throwInvalidDataStructureException($product);
-        }
-
-        foreach ($attrCodes as $code) {
-            $attribute = $this->eavConfig->getAttribute(Product::ENTITY, $code);
-            $options = $attribute->getOptions();
-            array_shift($options);
-
-            $attributeValues = [];
-            foreach ($options as $option) {
-                $attributeValues[] = [
-                    'label'        => $option->getLabel(),
-                    'attribute_id' => $attribute->getId(),
-                    'value_index'  => $option->getValue(),
-                ];
-            }
-
-            $configurableAttributesData[] =
-                [
-                    'attribute_id' => $attribute->getId(),
-                    'code'         => $attribute->getAttributeCode(),
-                    'label'        => $attribute->getStoreLabel(),
-                    'position'     => '0',
-                    'values'       => $attributeValues,
-                ];
-        }
-
-        $configurableOptions = $this->optionsFactory->create($configurableAttributesData);
-        $extensionAttributes = $product->getExtensionAttributes();
-        $extensionAttributes->setConfigurableProductOptions($configurableOptions);
-        $product->setExtensionAttributes($extensionAttributes);
         $product->setTypeId(Configurable::TYPE_CODE);
-
         return $product;
-    }
-
-    /**
-     * @param ProductInterface $product
-     *
-     * @throws InvalidDataStructureException
-     *
-     * @return void
-     */
-    private function throwInvalidDataStructureException(ProductInterface $product)
-    {
-        throw new InvalidDataStructureException(
-            __(
-                'Unable to import variant product %1. Variant product must have defined configurable attributes in properties.',
-                $product->getPimId()
-            )
-        );
     }
 }
