@@ -1,5 +1,5 @@
 {
-    "name": "emico/module-pimcore-integration",
+    "name": "divante-ltd/module-pimcore-integration",
     "description": "Magento-Pimcore bridge module.",
     "version": "1.0.5.4",
     "require": {
