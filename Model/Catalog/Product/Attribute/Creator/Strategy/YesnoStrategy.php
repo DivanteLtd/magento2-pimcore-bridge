@@ -21,10 +21,13 @@ class YesnoStrategy extends AbstractStrategy
     public function execute(): int
     {
         $eavSetup = $this->eavSetupFactory->create();
+
+        $attributeConfiguration = $this->getAttributeConfiguration($eavSetup);
+
         $eavSetup->addAttribute(
             Product::ENTITY,
             $this->code,
-            array_merge(self::$defaultAttrConfig, [
+            array_merge($attributeConfiguration, [
                 'type' => 'int',
                 'label'  => $this->attrData['label'],
                 'input'  => 'boolean',

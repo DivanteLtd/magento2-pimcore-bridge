@@ -9,8 +9,11 @@
 namespace Divante\PimcoreIntegration\Model\Catalog\Product\Attribute\Creator\Strategy;
 
 use Magento\Eav\Api\AttributeRepositoryInterface;
+use Magento\Catalog\Setup\CategorySetup;
 use Magento\Eav\Model\Entity\Attribute\ScopedAttributeInterface;
+use Magento\Eav\Setup\EavSetup;
 use Magento\Eav\Setup\EavSetupFactory;
+
 
 /**
  * Class AbstractStrategy
@@ -76,6 +79,21 @@ abstract class  AbstractStrategy implements AttributeCreationStrategyInterface
         $this->attributeRepository = $attributeRepository;
         $this->attrData = $attrData;
         $this->code = $code;
+    }
+
+    /**
+     * @param EavSetup $eavSetup
+     * @return array
+     */
+    public function getAttributeConfiguration(EavSetup $eavSetup): array
+    {
+        $existingAttribute = $eavSetup->getAttribute(CategorySetup::CATALOG_PRODUCT_ENTITY_TYPE_ID, $this->code);
+
+        if (!$existingAttribute) {
+            return self::$defaultAttrConfig;
+        }
+
+        return $this->getExistingAttributeOptions($existingAttribute);
     }
 
     /**

@@ -9,9 +9,6 @@
 namespace Divante\PimcoreIntegration\Model\Catalog\Product\Attribute\Creator\Strategy;
 
 use Magento\Catalog\Model\Product;
-use Magento\Catalog\Setup\CategorySetup;
-use Magento\Eav\Setup\EavSetup;
-
 /**
  * Class TextStrategy
  */
@@ -38,20 +35,5 @@ class TextStrategy extends AbstractStrategy
         );
 
         return $eavSetup->getAttributeId(Product::ENTITY, $this->code);
-    }
-
-    /**
-     * @param EavSetup $eavSetup
-     * @return array
-     */
-    public function getAttributeConfiguration(EavSetup $eavSetup): array
-    {
-        $existingAttribute = $eavSetup->getAttribute(CategorySetup::CATALOG_PRODUCT_ENTITY_TYPE_ID, $this->code);
-
-        if (!$existingAttribute) {
-            return self::$defaultAttrConfig;
-        }
-
-        return $this->getExistingAttributeOptions($existingAttribute);
     }
 }
