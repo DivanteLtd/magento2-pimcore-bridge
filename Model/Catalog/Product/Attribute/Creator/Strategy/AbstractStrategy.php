@@ -85,7 +85,7 @@ abstract class  AbstractStrategy implements AttributeCreationStrategyInterface
      * @param EavSetup $eavSetup
      * @return array
      */
-    public function getAttributeConfiguration(EavSetup $eavSetup): array
+    protected function getAttributeConfiguration(EavSetup $eavSetup): array
     {
         $existingAttribute = $eavSetup->getAttribute(CategorySetup::CATALOG_PRODUCT_ENTITY_TYPE_ID, $this->code);
 
@@ -100,7 +100,7 @@ abstract class  AbstractStrategy implements AttributeCreationStrategyInterface
      * @param array $existingAttribute
      * @return array
      */
-    public function getExistingAttributeOptions(array $existingAttribute): array
+    protected function getExistingAttributeOptions(array $existingAttribute): array
     {
         return [
             'backend'                    => $existingAttribute['backend_model'],
