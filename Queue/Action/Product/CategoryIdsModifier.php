@@ -82,7 +82,7 @@ class CategoryIdsModifier implements DataModifierInterface
         $mageCatIds = $catCollection->getAllIds();
         $pimcoreProduct->setData('category_ids', $mageCatIds);
 
-        if (count($pimCatIds) !== count($mageCatIds)) {
+        if (is_iterable($pimCatIds) && count($pimCatIds) !== count($mageCatIds)) {
             $existingPimCatIds = [];
             /** @var Category $category */
             foreach ($catCollection as $category) {
