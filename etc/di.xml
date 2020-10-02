@@ -164,6 +164,8 @@
                 <item name="shipment_type" xsi:type="string">shipment_type</item>
                 <item name="status" xsi:type="string">status</item>
                 <item name="is_active_in_pim" xsi:type="string">is_active_in_pim</item>
+                <item name="description" xsi:type="string">description</item>
+                <item name="short_description" xsi:type="string">short_description</item>
             </argument>
         </arguments>
     </type>

@@ -31,7 +31,7 @@ class AssetQueue extends AbstractQueue implements AssetQueueInterface
     }
 
     /**
-     * @return int|null
+     * @return string|null
      */
     public function getAssetId()
     {
@@ -39,11 +39,11 @@ class AssetQueue extends AbstractQueue implements AssetQueueInterface
     }
 
     /**
-     * @param int $assetId
+     * @param string $assetId
      *
      * @return $this
      */
-    public function setAssetId(int $assetId): AssetQueueInterface
+    public function setAssetId(string $assetId): AssetQueueInterface
     {
         $this->setData(self::ASSET_ID, $assetId);
 

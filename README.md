@@ -39,11 +39,11 @@ The second part of this module (Magento 2 - Pimcore Integration Module) is avail
 
 ## <a name="compatibility"></a>Compatibility
 
-This module is compatible with Magento 2.2.x
+This module is compatible with Magento 2.2.x and 2.3.x
 
 ## <a name="installation"></a>Installing/Getting started
 ###
-- install with composer `composer require divante/module-magento-p2m-integration` or copy files to `<root>/app/code/Divante/PimcoreIntegration`
+- copy files to `<root>/app/code/Divante/PimcoreIntegration`
 - `php bin/magento setup:upgrade`
 - `php bin/magento module:enable Divante_PimcoreIntegration`
 - configure the module in the Magento admin panel
@@ -65,6 +65,8 @@ The following types of attributes are supported:
 * multiselect
 * wysiwyg
 * object
+* quantity-value
+* visual swatch
 
 *Object* is a special type of attribute that emits an event which allows us to implement any complex attribute type via third  party services.
 

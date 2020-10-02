@@ -38,6 +38,16 @@
                     <comment><![CDATA[Queues older than the selected value will be removed from a database]]></comment>
                 </field>
             </group>
+            <group id="prices" translate="label" type="text" sortOrder="20" showInDefault="1" showInWebsite="1"
+                   showInStore="1">
+                <label>Prices</label>
+                <field id="is_override_enabled" translate="label" type="select" sortOrder="10" showInDefault="1"
+                       showInWebsite="1" showInStore="0">
+                    <label>Enable price override</label>
+                    <source_model>Magento\Config\Model\Config\Source\Yesno</source_model>
+                    <comment><![CDATA[If yes then price from Pimcore will override current price, otherwise price will be set only on the first one.]]></comment>
+                </field>
+            </group>
         </section>
         <section id="pimcore" translate="label" sortOrder="20" showInDefault="1" showInWebsite="1" showInStore="1">
             <class>separator-top</class>

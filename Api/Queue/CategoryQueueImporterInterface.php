@@ -22,7 +22,7 @@ interface CategoryQueueImporterInterface
      *
      * @param CategoryQueueInterface $data
      *
-     * @return array
+     * @return string[]
      */
     public function insertOrUpdate(CategoryQueueInterface $data): array;
 
@@ -31,7 +31,7 @@ interface CategoryQueueImporterInterface
      *
      * @param int $categoryId
      *
-     * @return array
+     * @return string[]
      */
     public function delete(int $categoryId): array;
 }

@@ -149,9 +149,10 @@ class UpdateAssetAction implements ActionInterface
      */
     private function prepareRequest(AssetQueueInterface $queue): RequestClientInterface
     {
-        $this->request->setUri($this->urlBuilder->build('asset/id/' . $queue->getAssetId()))
+        $this->request->setUri($this->urlBuilder->build('asset'))
             ->setEventPrefix('asset')
             ->setMethod('GET')
+            ->setQueryData(['id' => $queue->getAssetId()])
             ->setStoreViewId($queue->getStoreViewId());
 
         return $this->request;

@@ -63,7 +63,7 @@ class CategoryLinkerListener implements ObserverInterface
         $catsToLink = array_diff($categoryIds, $product->getCategoryIds());
 
         if ($catsToLink) {
-            $this->categoryLinkManagement->assignProductToCategories($product->getSku(), $categoryIds);
+            $this->categoryLinkManagement->assignProductToCategories($product->getSku(), $catsToLink);
         }
 
         if ($catsToUnlink) {
@@ -71,5 +71,7 @@ class CategoryLinkerListener implements ObserverInterface
                 $this->categoryLinkRepository->deleteByIds($catId, $product->getSku());
             }
         }
+
+        $product->setData('category_ids', $categoryIds);
     }
 }

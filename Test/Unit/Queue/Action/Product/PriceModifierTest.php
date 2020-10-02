@@ -11,8 +11,12 @@ namespace Divante\PimcoreIntegration\Test\Unit\Queue\Action\Product;
 use Divante\PimcoreIntegration\Model\Pimcore\PimcoreProduct;
 use Divante\PimcoreIntegration\Queue\Action\Product\DataModifierInterface;
 use Divante\PimcoreIntegration\Queue\Action\Product\PriceModifier;
+use Divante\PimcoreIntegration\System\Config;
+use Divante\PimcoreIntegration\System\ConfigInterface;
 use Magento\Catalog\Model\Product;
+use Magento\Catalog\Model\Product\Type\Price;
 use Magento\Framework\TestFramework\Unit\Helper\ObjectManager;
+use PHPUnit\Framework\MockObject\MockObject;
 
 /**
  * PriceModifierTest
@@ -25,12 +29,12 @@ class PriceModifierTest extends \PHPUnit\Framework\TestCase
     private $priceModifier;
 
     /**
-     * @var PimcoreProduct|\PHPUnit_Framework_MockObject_MockObject
+     * @var PimcoreProduct|MockObject
      */
     private $pimcoreProduct;
 
     /**
-     * @var Product|\PHPUnit_Framework_MockObject_MockObject
+     * @var Product|MockObject
      */
     private $product;
 
@@ -39,21 +43,40 @@ class PriceModifierTest extends \PHPUnit\Framework\TestCase
      */
     private $objectManager;
 
+    /**
+     * @var ConfigInterface|MockObject
+     */
+    private $configMock;
+
+    /**
+     * @var Price|MockObject
+     */
+    private $mockPriceModel;
+
     public function setUp()
     {
         $this->objectManager = new ObjectManager($this);
 
-        $this->product = $this->mockProduct = $this->getMockBuilder(Product::class)
+        $this->mockPriceModel = $this->getMockBuilder(Price::class)
             ->disableOriginalConstructor()
             ->setMethods(['getPrice'])
             ->getMock();
 
-        $this->pimcoreProduct = $this->mockPimcoreProduct = $this->getMockBuilder(PimcoreProduct::class)
+        $this->product = $this->getMockBuilder(Product::class)
             ->disableOriginalConstructor()
-            ->setMethods(['getData', 'setData'])
+            ->setMethods(['getPriceModel'])
             ->getMock();
 
-        $this->priceModifier = $this->objectManager->getObject(PriceModifier::class);
+        $this->pimcoreProduct = $this->objectManager->getObject(PimcoreProduct::class);
+
+        $this->configMock = $this->getMockBuilder(Config::class)
+            ->disableOriginalConstructor()
+            ->setMethods(['getIsPriceOverride'])
+            ->getMock();
+
+        $this->priceModifier = $this->objectManager->getObject(PriceModifier::class, [
+            'config' => $this->configMock
+        ]);
     }
 
     /**
@@ -66,22 +89,32 @@ class PriceModifierTest extends \PHPUnit\Framework\TestCase
             [10, null, 10],
             [null, 10, 10],
             [12, 10, 12],
+            [15, 20, 20, true],
+            [15, 20, 15, false],
         ];
     }
 
     /**
      * @dataProvider priceDataProvider
      */
-    public function testHandle($price, $pimPrice, $final)
+    public function testHandle($price, $pimPrice, $final, $override = false)
     {
-        $this->pimcoreProduct->expects($this->exactly(2))
-            ->method('getData')
-            ->willReturn($pimPrice);
+        $this->product->setPrice($price);
+        $this->product->expects($this->any())
+            ->method('getPriceModel')
+            ->willReturn($this->mockPriceModel);
 
-        $this->product->expects($this->atLeast(1))
+        $this->mockPriceModel->expects($this->any())
             ->method('getPrice')
             ->willReturn($price);
 
-        $this->priceModifier->handle($this->product, $this->pimcoreProduct);
+        $this->configMock->expects($this->any())
+            ->method('getIsPriceOverride')
+            ->willReturn($override);
+
+        $this->pimcoreProduct->setData('price', $pimPrice);
+
+        $result = $this->priceModifier->handle($this->product, $this->pimcoreProduct);
+        $this->assertEquals($final, $result[1]->getPrice());
     }
 }

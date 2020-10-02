@@ -31,11 +31,14 @@ class SimpleAttributeMapper implements PimcoreAttributeMapperInterface
             case self::YESNO:
             case self::DATETIME:
             case self::WYSIWYG:
+            case self::QVALUE:
                 return $this->mapText($attributeData);
             case self::SELECT:
                 return $this->mapSelect($attributeData);
             case self::MULTISELECT:
                 return $this->mapMultiSelect($attributeData);
+            case self::VISUALSWATCH:
+                return $this->mapVisualSwatch($attributeData);
             case self::OBJECT:
             case self::ASSET:
                 return $this->mapObject($attributeData);
@@ -66,7 +69,7 @@ class SimpleAttributeMapper implements PimcoreAttributeMapperInterface
     private function mapSelect(array $attributeData): array
     {
         return [
-            'type'  => 'select',
+            'type' => 'select',
             'value' => $attributeData['value']['key'] ?? '',
         ];
     }
@@ -87,8 +90,21 @@ class SimpleAttributeMapper implements PimcoreAttributeMapperInterface
         }
 
         return [
-            'type'  => 'multiselect',
+            'type' => 'multiselect',
             'value' => $values,
+        ];
+    }
+
+    /**
+     * @param array $attributeData
+     *
+     * @return array
+     */
+    private function mapVisualSwatch(array $attributeData): array
+    {
+        return [
+            'type' => 'visualswatch',
+            'value' => $attributeData['value']['key'] ?? '',
         ];
     }
 

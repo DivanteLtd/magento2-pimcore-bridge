@@ -74,7 +74,7 @@ class AssetQueueImporter extends AbstractImporter implements AssetQueueImporterI
      *
      * @param AssetQueueInterface $data
      *
-     * @return array
+     * @return string[]
      */
     public function insertOrUpdate(AssetQueueInterface $data): array
     {
@@ -87,7 +87,7 @@ class AssetQueueImporter extends AbstractImporter implements AssetQueueImporterI
      * @param int $queueId
      *
      * @throws InvalidQueueTypeException
-     * @return array
+     * @return string[]
      */
     public function delete(int $queueId): array
     {

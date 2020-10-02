@@ -2,24 +2,26 @@
 /**
  * @package  Divante\PimcoreIntegration
  * @author Bartosz Herba <bherba@divante.pl>
- * @copyright 2018 Divante Sp. z o.o.
+ * @copyright 2020 Divante Sp. z o.o.
  * @license See LICENSE_DIVANTE.txt for license details.
  */
 
 namespace Divante\PimcoreIntegration\Model\Catalog\Product\Attribute\Creator\Strategy;
 
 use Magento\Catalog\Model\Product;
+use Magento\Eav\Setup\EavSetup;
 
 /**
- * Class YesnoStrategy
+ * Class QuantityValueStrategy
  */
-class YesnoStrategy extends AbstractStrategy
+class QuantityValueStrategy extends AbstractStrategy
 {
     /**
      * @return int
      */
     public function execute(): int
     {
+        /** @var EavSetup $eavSetup */
         $eavSetup = $this->eavSetupFactory->create();
         $eavSetup->addAttribute(
             Product::ENTITY,
@@ -36,10 +38,17 @@ class YesnoStrategy extends AbstractStrategy
     public function getBaseAttrConfig(): array
     {
         return [
-            'type' => 'int',
-            'label'  => $this->attrData['label'],
-            'input'  => 'boolean',
-            'source' => \Magento\Eav\Model\Entity\Attribute\Source\Boolean::class,
+            'type' => 'decimal',
+            'label' => $this->getLabel(),
+            'input' => 'text',
         ];
+    }
+
+    /**
+     * @return string
+     */
+    private function getLabel(): string
+    {
+        return $this->attrData['label'] . ' (' . $this->attrData['unit'] . ')';
     }
 }

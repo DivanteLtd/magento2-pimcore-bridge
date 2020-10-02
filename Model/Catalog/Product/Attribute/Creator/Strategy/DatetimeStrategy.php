@@ -22,17 +22,26 @@ class DatetimeStrategy extends AbstractStrategy
     public function execute(): int
     {
         $eavSetup = $this->eavSetupFactory->create();
+
         $eavSetup->addAttribute(
             Product::ENTITY,
             $this->code,
-            array_merge(self::$defaultAttrConfig, [
-                'type'    => 'datetime',
-                'label'   => $this->attrData['label'],
-                'input'   => 'date',
-                'backend' => Datetime::class,
-            ])
+            $this->getMergedConfig($this->getBaseAttrConfig())
         );
 
         return $eavSetup->getAttributeId(Product::ENTITY, $this->code);
+    }
+
+    /**
+     * @return array
+     */
+    public function getBaseAttrConfig(): array
+    {
+        return [
+            'type'    => 'datetime',
+            'label'   => $this->attrData['label'],
+            'input'   => 'date',
+            'backend' => Datetime::class,
+        ];
     }
 }

@@ -84,18 +84,24 @@ class MultiselectStrategy extends AbstractOptionTypeStrategy
     {
         $eavSetup = $this->eavSetupFactory->create();
 
-        $data = [
+        $eavSetup->addAttribute(
+            Product::ENTITY,
+            $this->code,
+            $this->getMergedConfig($this->getBaseAttrConfig())
+        );
+    }
+
+    /**
+     * @return array
+     */
+    public function getBaseAttrConfig(): array
+    {
+        return [
             'type'         => 'varchar',
             'label'        => $this->attrData['label'],
             'input'        => 'multiselect',
             'user_defined' => true,
             'backend'      => ArrayBackend::class,
         ];
-
-        $eavSetup->addAttribute(
-            Product::ENTITY,
-            $this->code,
-            array_merge(self::$defaultAttrConfig, $data)
-        );
     }
 }

@@ -77,7 +77,8 @@ class CategoryIdsModifier implements DataModifierInterface
      */
     public function handle(Product $product, PimcoreProductInterface $pimcoreProduct): array
     {
-        $pimCatIds = $pimcoreProduct->getData('category_ids');
+        $pimCatIds = $pimcoreProduct->getData('category_ids') ?? [];
+
         $catCollection = $this->getMageCatCollection($pimcoreProduct);
         $mageCatIds = $catCollection->getAllIds();
         $pimcoreProduct->setData('category_ids', $mageCatIds);

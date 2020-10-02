@@ -22,7 +22,7 @@ interface AssetQueueImporterInterface
      *
      * @param AssetQueueInterface $data
      *
-     * @return array
+     * @return string[]
      */
     public function insertOrUpdate(AssetQueueInterface $data): array;
 
@@ -31,7 +31,7 @@ interface AssetQueueImporterInterface
      *
      * @param int $assetId
      *
-     * @return array
+     * @return string[]
      */
     public function delete(int $assetId): array;
 }

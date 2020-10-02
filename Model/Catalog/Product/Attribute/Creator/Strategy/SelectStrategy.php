@@ -64,7 +64,7 @@ class SelectStrategy extends AbstractOptionTypeStrategy
 
         $options = [
             'value' => [
-                sprintf($value) => [0 => $label, $this->storeManager->getStore()->getId() => $label],
+                $value => [0 => $label, $this->storeManager->getStore()->getId() => $label],
             ],
         ];
 
@@ -80,6 +80,26 @@ class SelectStrategy extends AbstractOptionTypeStrategy
     {
         $eavSetup = $this->eavSetupFactory->create();
 
+        $eavSetup->addAttribute(
+            Product::ENTITY,
+            $this->code,
+            $this->getMergedConfig($this->getBaseAttrConfig())
+        );
+    }
+
+    /**
+     * @return bool
+     */
+    private function isConfigurable(): bool
+    {
+        return (!empty($this->attrData['is_configurable']) && true === $this->attrData['is_configurable']);
+    }
+
+    /**
+     * @return array
+     */
+    public function getBaseAttrConfig(): array
+    {
         $data = [
             'type'         => 'int',
             'label'        => $this->attrData['label'],
@@ -93,18 +113,6 @@ class SelectStrategy extends AbstractOptionTypeStrategy
             ]);
         }
 
-        $eavSetup->addAttribute(
-            Product::ENTITY,
-            $this->code,
-            array_merge(self::$defaultAttrConfig, $data)
-        );
-    }
-
-    /**
-     * @return bool
-     */
-    private function isConfigurable(): bool
-    {
-        return (!empty($this->attrData['is_configurable']) && true === $this->attrData['is_configurable']);
+        return $data;
     }
 }

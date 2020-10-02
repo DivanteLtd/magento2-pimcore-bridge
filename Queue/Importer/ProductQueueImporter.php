@@ -73,7 +73,7 @@ class ProductQueueImporter extends AbstractImporter implements ProductQueueImpor
      *
      * @param ProductQueueInterface $data
      *
-     * @return array
+     * @return string[]
      */
     public function insertOrUpdate(ProductQueueInterface $data): array
     {
@@ -86,7 +86,7 @@ class ProductQueueImporter extends AbstractImporter implements ProductQueueImpor
      * @param int $productId
      *
      * @throws \Divante\PimcoreIntegration\Exception\InvalidQueueTypeException
-     * @return array
+     * @return string[]
      */
     public function delete(int $productId): array
     {

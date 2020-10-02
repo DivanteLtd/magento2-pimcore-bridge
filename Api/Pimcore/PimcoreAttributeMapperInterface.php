@@ -34,6 +34,11 @@ interface PimcoreAttributeMapperInterface
     const WYSIWYG= 'wysiwyg';
 
     /**
+     * Pimcore quantityValue type
+     */
+    const QVALUE= 'quantityValue';
+
+    /**
      * Pimcore object type object
      */
     const OBJECT = 'object';
@@ -62,6 +67,11 @@ interface PimcoreAttributeMapperInterface
      * Pimcore multiselect type object
      */
     const MULTISELECT = 'multiselect';
+
+    /**
+     * Pimcore multiselect type object
+     */
+    const VISUALSWATCH = 'visualswatch';
 
     /**
      * @param array $attributeData
