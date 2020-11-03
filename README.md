@@ -43,7 +43,7 @@ This module is compatible with Magento 2.2.x and 2.3.x
 
 ## <a name="installation"></a>Installing/Getting started
 ###
-- copy files to `<root>/app/code/Divante/PimcoreIntegration`
+- Run `composer require divante-ltd/module-pimcore-integration`
 - `php bin/magento setup:upgrade`
 - `php bin/magento module:enable Divante_PimcoreIntegration`
 - configure the module in the Magento admin panel
